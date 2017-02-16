@@ -27,12 +27,7 @@
 
 - (IBAction)addTask:(NSButton *)sender
 {
-    PiDownloadTask *task = [PiDownloadTask taskWithURL:_urlTextField.stringValue];
-    if ([[PiDownloader SharedObject] addTask:task])
-    {
-        [task resume];
-    }
-    
+    [[PiDownloader SharedObject] addTaskWithUrl:_urlTextField.stringValue];
     [_downloadTableView reloadData];
 }
 

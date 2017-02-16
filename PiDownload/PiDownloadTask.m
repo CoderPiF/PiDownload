@@ -53,6 +53,12 @@
     }
     _task = task;
     [_task addObserver:self forKeyPath:kTaskStateKeyPath options:NSKeyValueObservingOptionNew context:nil];
+    _runningTime = 0;
+    _lastRunningTime = 0;
+    if (_task.state == NSURLSessionTaskStateRunning)
+    {
+        [self recordRunningTime];
+    }
 }
 
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context

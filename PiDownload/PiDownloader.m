@@ -77,9 +77,22 @@
     return nil;
 }
 
+- (PiDownloadTask *) findTaskWithUrlString:(NSString *)urlString
+{
+    for (PiDownloadTask *task in _tasks)
+    {
+        if ([task.downloadURL caseInsensitiveCompare:urlString] == NSOrderedSame)
+        {
+            return task;
+        }
+    }
+    return nil;
+}
+
 - (void) createDownloadTask:(PiDownloadTask *)task
 {
-    assert(task.task == nil);
+    if (task.task != nil) return;
+    
     if ([task isValidresumeData])
     {
         task.task = [_backgroundSession downloadTaskWithResumeData:task.resumeData];
@@ -90,22 +103,18 @@
     }
 }
 
-- (BOOL) addTask:(PiDownloadTask *)task
+- (PiDownloadTask *) addTaskWithUrl:(NSString *)urlString
 {
-    if ([self findTaskWithIdentifier:task.identifier] != nil)
+    PiDownloadTask *task = [self findTaskWithUrlString:urlString];
+    if (task != nil)
     {
-        PI_WARNING_LOG(@"Add repeat task with url : %@", task.downloadURL);
-        return NO;
+        return task;
     }
     
-    PI_INFO_LOG(@"Add task with url : %@", task.downloadURL);
-    if (task.task == nil)
-    {
-        [self createDownloadTask:task];
-    }
-    
-    [_tasks addObject:task];
-    return YES;
+    task = [PiDownloadTask taskWithURL:urlString];
+    [self createDownloadTask:task];
+    [task resume];
+    return task;
 }
 
 - (BOOL) removeTask:(PiDownloadTask *)task
@@ -125,6 +134,12 @@
     return YES;
 }
 
+- (BOOL) removeTaskWithUrl:(NSString *)urlString
+{
+    PiDownloadTask *task = [self findTaskWithUrlString:urlString];
+    return [self removeTask:task];
+}
+
 // MARK: - NSURLSessionDownloadDelegate
 - (void) URLSession:(NSURLSession *)session task:(NSURLSessionTask *)downloadTask didCompleteWithError:(NSError *)error
 {
@@ -137,6 +152,7 @@
     if (error.code == NSURLErrorCancelled)
     {
         task.resumeData = nil;
+        [_tasks removeObject:task];
         PI_INFO_LOG(@"Cancel Download Task with URL : %@", task.downloadURL);
     }
     else
@@ -145,7 +161,7 @@
     }
     
     [task onDownloader:self didCompleteWithError:error];
-    [_tasks removeObject:task];
+    task.task = nil; // FIXME: 发生错误时：task标记错误，状态改变为重新开始时，需要在downloader重新创建downloadTask
 }
 
 - (void) URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location
