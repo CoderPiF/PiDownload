@@ -1,0 +1,409 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		02460E201E55819800934851 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 02460E1F1E55819800934851 /* AppDelegate.m */; };
+		02460E231E55819800934851 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 02460E221E55819800934851 /* main.m */; };
+		02460E261E55819800934851 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02460E251E55819800934851 /* ViewController.m */; };
+		02460E281E55819800934851 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02460E271E55819800934851 /* Assets.xcassets */; };
+		02460E2B1E55819800934851 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02460E291E55819800934851 /* Main.storyboard */; };
+		02460E3D1E55822E00934851 /* PiDownload.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02460E381E5581B800934851 /* PiDownload.framework */; };
+		02460E3F1E55823700934851 /* PiDownload.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 02460E381E5581B800934851 /* PiDownload.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		02460E371E5581B800934851 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 02460E321E5581B800934851 /* PiDownload.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 02460DDB1E554D3800934851;
+			remoteInfo = "PiDownload-MacOS";
+		};
+		02460E391E5581B800934851 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 02460E321E5581B800934851 /* PiDownload.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 02460DEB1E554D6700934851;
+			remoteInfo = "PiDownload-iOS";
+		};
+		02460E3B1E55821F00934851 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 02460E321E5581B800934851 /* PiDownload.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 02460DDA1E554D3800934851;
+			remoteInfo = "PiDownload-MacOS";
+		};
+		02460E401E55823700934851 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 02460E321E5581B800934851 /* PiDownload.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 02460DDA1E554D3800934851;
+			remoteInfo = "PiDownload-MacOS";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		02460E421E55823700934851 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				02460E3F1E55823700934851 /* PiDownload.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		02460E1B1E55819800934851 /* TestDownload_MacOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestDownload_MacOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		02460E1E1E55819800934851 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		02460E1F1E55819800934851 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		02460E221E55819800934851 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		02460E241E55819800934851 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		02460E251E55819800934851 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		02460E271E55819800934851 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		02460E2A1E55819800934851 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		02460E2C1E55819800934851 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		02460E321E5581B800934851 /* PiDownload.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PiDownload.xcodeproj; path = ../../PiDownload.xcodeproj; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		02460E181E55819800934851 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				02460E3D1E55822E00934851 /* PiDownload.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		02460E121E55819800934851 = {
+			isa = PBXGroup;
+			children = (
+				02460E321E5581B800934851 /* PiDownload.xcodeproj */,
+				02460E1D1E55819800934851 /* TestDownload_MacOS */,
+				02460E1C1E55819800934851 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		02460E1C1E55819800934851 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				02460E1B1E55819800934851 /* TestDownload_MacOS.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		02460E1D1E55819800934851 /* TestDownload_MacOS */ = {
+			isa = PBXGroup;
+			children = (
+				02460E1E1E55819800934851 /* AppDelegate.h */,
+				02460E1F1E55819800934851 /* AppDelegate.m */,
+				02460E241E55819800934851 /* ViewController.h */,
+				02460E251E55819800934851 /* ViewController.m */,
+				02460E271E55819800934851 /* Assets.xcassets */,
+				02460E291E55819800934851 /* Main.storyboard */,
+				02460E2C1E55819800934851 /* Info.plist */,
+				02460E211E55819800934851 /* Supporting Files */,
+			);
+			path = TestDownload_MacOS;
+			sourceTree = "<group>";
+		};
+		02460E211E55819800934851 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				02460E221E55819800934851 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		02460E331E5581B800934851 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				02460E381E5581B800934851 /* PiDownload.framework */,
+				02460E3A1E5581B800934851 /* PiDownload.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		02460E1A1E55819800934851 /* TestDownload_MacOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 02460E2F1E55819800934851 /* Build configuration list for PBXNativeTarget "TestDownload_MacOS" */;
+			buildPhases = (
+				02460E171E55819800934851 /* Sources */,
+				02460E181E55819800934851 /* Frameworks */,
+				02460E191E55819800934851 /* Resources */,
+				02460E421E55823700934851 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				02460E3C1E55821F00934851 /* PBXTargetDependency */,
+				02460E411E55823700934851 /* PBXTargetDependency */,
+			);
+			name = TestDownload_MacOS;
+			productName = TestDownload_MacOS;
+			productReference = 02460E1B1E55819800934851 /* TestDownload_MacOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		02460E131E55819800934851 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0820;
+				ORGANIZATIONNAME = Coder.Pi;
+				TargetAttributes = {
+					02460E1A1E55819800934851 = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = 3SQSZ2P8DJ;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 02460E161E55819800934851 /* Build configuration list for PBXProject "TestDownload_MacOS" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 02460E121E55819800934851;
+			productRefGroup = 02460E1C1E55819800934851 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 02460E331E5581B800934851 /* Products */;
+					ProjectRef = 02460E321E5581B800934851 /* PiDownload.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				02460E1A1E55819800934851 /* TestDownload_MacOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		02460E381E5581B800934851 /* PiDownload.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = PiDownload.framework;
+			remoteRef = 02460E371E5581B800934851 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		02460E3A1E5581B800934851 /* PiDownload.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = PiDownload.framework;
+			remoteRef = 02460E391E5581B800934851 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		02460E191E55819800934851 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				02460E281E55819800934851 /* Assets.xcassets in Resources */,
+				02460E2B1E55819800934851 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		02460E171E55819800934851 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				02460E261E55819800934851 /* ViewController.m in Sources */,
+				02460E231E55819800934851 /* main.m in Sources */,
+				02460E201E55819800934851 /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		02460E3C1E55821F00934851 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "PiDownload-MacOS";
+			targetProxy = 02460E3B1E55821F00934851 /* PBXContainerItemProxy */;
+		};
+		02460E411E55823700934851 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "PiDownload-MacOS";
+			targetProxy = 02460E401E55823700934851 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		02460E291E55819800934851 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				02460E2A1E55819800934851 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		02460E2D1E55819800934851 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		02460E2E1E55819800934851 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		02460E301E55819800934851 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 3SQSZ2P8DJ;
+				FRAMEWORK_SEARCH_PATHS = "";
+				INFOPLIST_FILE = TestDownload_MacOS/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				OTHER_CODE_SIGN_FLAGS = "--deep";
+				PRODUCT_BUNDLE_IDENTIFIER = "Coder.Pi.TestDownload-MacOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		02460E311E55819800934851 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 3SQSZ2P8DJ;
+				FRAMEWORK_SEARCH_PATHS = "";
+				INFOPLIST_FILE = TestDownload_MacOS/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				OTHER_CODE_SIGN_FLAGS = "--deep";
+				PRODUCT_BUNDLE_IDENTIFIER = "Coder.Pi.TestDownload-MacOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		02460E161E55819800934851 /* Build configuration list for PBXProject "TestDownload_MacOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				02460E2D1E55819800934851 /* Debug */,
+				02460E2E1E55819800934851 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		02460E2F1E55819800934851 /* Build configuration list for PBXNativeTarget "TestDownload_MacOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				02460E301E55819800934851 /* Debug */,
+				02460E311E55819800934851 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 02460E131E55819800934851 /* Project object */;
+}

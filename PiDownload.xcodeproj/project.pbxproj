@@ -11,16 +11,16 @@
 		02460DF41E554D8B00934851 /* Info-iOS.plist in Resources */ = {isa = PBXBuildFile; fileRef = 02460DF31E554D8B00934851 /* Info-iOS.plist */; };
 		02460DF61E554D9000934851 /* Info-MacOS.plist in Resources */ = {isa = PBXBuildFile; fileRef = 02460DF51E554D9000934851 /* Info-MacOS.plist */; };
 		02460DF71E554D9400934851 /* PiDownload.h in Headers */ = {isa = PBXBuildFile; fileRef = 02460DDE1E554D3800934851 /* PiDownload.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		02460DFA1E554DEC00934851 /* PiDownloadLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 02460DF81E554DEC00934851 /* PiDownloadLogger.h */; };
-		02460DFB1E554DEC00934851 /* PiDownloadLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 02460DF81E554DEC00934851 /* PiDownloadLogger.h */; };
+		02460DFA1E554DEC00934851 /* PiDownloadLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 02460DF81E554DEC00934851 /* PiDownloadLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		02460DFB1E554DEC00934851 /* PiDownloadLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 02460DF81E554DEC00934851 /* PiDownloadLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		02460DFC1E554DEC00934851 /* PiDownloadLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 02460DF91E554DEC00934851 /* PiDownloadLogger.m */; };
 		02460DFD1E554DEC00934851 /* PiDownloadLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 02460DF91E554DEC00934851 /* PiDownloadLogger.m */; };
-		02460E001E554E8200934851 /* PiDownloader.h in Headers */ = {isa = PBXBuildFile; fileRef = 02460DFE1E554E8200934851 /* PiDownloader.h */; };
-		02460E011E554E8200934851 /* PiDownloader.h in Headers */ = {isa = PBXBuildFile; fileRef = 02460DFE1E554E8200934851 /* PiDownloader.h */; };
+		02460E001E554E8200934851 /* PiDownloader.h in Headers */ = {isa = PBXBuildFile; fileRef = 02460DFE1E554E8200934851 /* PiDownloader.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		02460E011E554E8200934851 /* PiDownloader.h in Headers */ = {isa = PBXBuildFile; fileRef = 02460DFE1E554E8200934851 /* PiDownloader.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		02460E021E554E8200934851 /* PiDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 02460DFF1E554E8200934851 /* PiDownloader.m */; };
 		02460E031E554E8200934851 /* PiDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 02460DFF1E554E8200934851 /* PiDownloader.m */; };
-		02460E061E554ED500934851 /* PiDownloadTask.h in Headers */ = {isa = PBXBuildFile; fileRef = 02460E041E554ED500934851 /* PiDownloadTask.h */; };
-		02460E071E554ED600934851 /* PiDownloadTask.h in Headers */ = {isa = PBXBuildFile; fileRef = 02460E041E554ED500934851 /* PiDownloadTask.h */; };
+		02460E061E554ED500934851 /* PiDownloadTask.h in Headers */ = {isa = PBXBuildFile; fileRef = 02460E041E554ED500934851 /* PiDownloadTask.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		02460E071E554ED600934851 /* PiDownloadTask.h in Headers */ = {isa = PBXBuildFile; fileRef = 02460E041E554ED500934851 /* PiDownloadTask.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		02460E081E554ED600934851 /* PiDownloadTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 02460E051E554ED500934851 /* PiDownloadTask.m */; };
 		02460E091E554ED600934851 /* PiDownloadTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 02460E051E554ED500934851 /* PiDownloadTask.m */; };
 		02460E0E1E557CF000934851 /* PiDownloadStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = 02460E0C1E557CF000934851 /* PiDownloadStorage.h */; };
@@ -107,9 +107,9 @@
 			files = (
 				02460DE01E554D3800934851 /* PiDownload.h in Headers */,
 				02460DFA1E554DEC00934851 /* PiDownloadLogger.h in Headers */,
-				02460E0E1E557CF000934851 /* PiDownloadStorage.h in Headers */,
-				02460E061E554ED500934851 /* PiDownloadTask.h in Headers */,
 				02460E001E554E8200934851 /* PiDownloader.h in Headers */,
+				02460E061E554ED500934851 /* PiDownloadTask.h in Headers */,
+				02460E0E1E557CF000934851 /* PiDownloadStorage.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,9 +119,9 @@
 			files = (
 				02460DF71E554D9400934851 /* PiDownload.h in Headers */,
 				02460DFB1E554DEC00934851 /* PiDownloadLogger.h in Headers */,
-				02460E0F1E557CF000934851 /* PiDownloadStorage.h in Headers */,
 				02460E071E554ED600934851 /* PiDownloadTask.h in Headers */,
 				02460E011E554E8200934851 /* PiDownloader.h in Headers */,
+				02460E0F1E557CF000934851 /* PiDownloadStorage.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -353,7 +353,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "$(SRCROOT)/PiDownload/Info-MacOS.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				INSTALL_PATH = "@rpath";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = Coder.Pi.PiDownload;
@@ -374,7 +374,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "$(SRCROOT)/PiDownload/Info-MacOS.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				INSTALL_PATH = "@rpath";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = Coder.Pi.PiDownload;
@@ -393,8 +393,9 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "$(SRCROOT)/PiDownload/Info-iOS.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				INSTALL_PATH = "@rpath";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Coder.Pi.PiDownload;
@@ -415,8 +416,9 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "$(SRCROOT)/PiDownload/Info-iOS.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				INSTALL_PATH = "@rpath";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Coder.Pi.PiDownload;

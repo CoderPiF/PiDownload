@@ -36,6 +36,41 @@
     return self;
 }
 
+// MARK: - task
+#define kTaskStateKeyPath @"state"
+- (void) dealloc
+{
+    [_task removeObserver:self forKeyPath:kTaskStateKeyPath];
+}
+
+- (void) setTask:(NSURLSessionDownloadTask *)task
+{
+    if (_task == task) return;
+    
+    if (_task != nil)
+    {
+        [_task removeObserver:self forKeyPath:kTaskStateKeyPath];
+    }
+    _task = task;
+    [_task addObserver:self forKeyPath:kTaskStateKeyPath options:NSKeyValueObservingOptionNew context:nil];
+}
+
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
+{
+    if (object == _task && [keyPath isEqualToString:kTaskStateKeyPath])
+    {
+        NSURLSessionTaskState state = [[change objectForKey:NSKeyValueChangeNewKey] integerValue];
+        if (state == NSURLSessionTaskStateRunning)
+        {
+            [self recordRunningTime];
+        }
+        else
+        {
+            [self updateRunningTime];
+        }
+    }
+}
+
 // MARK: - ResumeData
 + (BOOL) isValidresumeData:(NSData *)resumeData
 {
@@ -131,19 +166,16 @@
 
 - (void) resume
 {
-    [self recordRunningTime];
     [_task resume];
 }
 
 - (void) suspend
 {
-    [self updateRunningTime];
     [_task suspend];
 }
 
 - (void) cancel
 {
-    [self updateRunningTime];
     [_task cancel];
 }
 
