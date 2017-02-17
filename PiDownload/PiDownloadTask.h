@@ -18,6 +18,8 @@
 
 typedef NS_ENUM(NSInteger, PiDownloadTaskState)
 {
+    PiDownloadTaskState_Error       = -1,
+    
     PiDownloadTaskState_Running     = 0,
     PiDownloadTaskState_Suspend     = 1,
     PiDownloadTaskState_Canceling   = 2,
@@ -32,10 +34,7 @@ typedef NS_ENUM(NSInteger, PiDownloadTaskState)
 @property (nonatomic, readonly) int64_t receivedSize;
 @property (nonatomic, readonly) NSTimeInterval runningTime;
 @property (nonatomic, weak) id<PiDownloadTaskDelegate> delegate;
-@property (nonatomic, strong) id userData;
-
-+ (PiDownloadTask *) taskWithURL:(NSString *)url;
-- (instancetype) initWithURL:(NSString *)url;
+@property (nonatomic, strong) NSObject<NSCoding> *userData;
 
 - (void) suspend;
 - (void) resume;

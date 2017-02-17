@@ -27,6 +27,8 @@
 		02460E0F1E557CF000934851 /* PiDownloadStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = 02460E0C1E557CF000934851 /* PiDownloadStorage.h */; };
 		02460E101E557CF000934851 /* PiDownloadStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 02460E0D1E557CF000934851 /* PiDownloadStorage.m */; };
 		02460E111E557CF000934851 /* PiDownloadStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 02460E0D1E557CF000934851 /* PiDownloadStorage.m */; };
+		02460E461E56972800934851 /* PiDownloadTaskImp.h in Headers */ = {isa = PBXBuildFile; fileRef = 02460E451E56972800934851 /* PiDownloadTaskImp.h */; };
+		02460E471E56972800934851 /* PiDownloadTaskImp.h in Headers */ = {isa = PBXBuildFile; fileRef = 02460E451E56972800934851 /* PiDownloadTaskImp.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +45,7 @@
 		02460E051E554ED500934851 /* PiDownloadTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PiDownloadTask.m; sourceTree = "<group>"; };
 		02460E0C1E557CF000934851 /* PiDownloadStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PiDownloadStorage.h; sourceTree = "<group>"; };
 		02460E0D1E557CF000934851 /* PiDownloadStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PiDownloadStorage.m; sourceTree = "<group>"; };
+		02460E451E56972800934851 /* PiDownloadTaskImp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PiDownloadTaskImp.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +97,7 @@
 				02460E051E554ED500934851 /* PiDownloadTask.m */,
 				02460E0C1E557CF000934851 /* PiDownloadStorage.h */,
 				02460E0D1E557CF000934851 /* PiDownloadStorage.m */,
+				02460E451E56972800934851 /* PiDownloadTaskImp.h */,
 			);
 			path = PiDownload;
 			sourceTree = "<group>";
@@ -106,6 +110,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				02460DE01E554D3800934851 /* PiDownload.h in Headers */,
+				02460E461E56972800934851 /* PiDownloadTaskImp.h in Headers */,
 				02460DFA1E554DEC00934851 /* PiDownloadLogger.h in Headers */,
 				02460E001E554E8200934851 /* PiDownloader.h in Headers */,
 				02460E061E554ED500934851 /* PiDownloadTask.h in Headers */,
@@ -118,6 +123,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				02460DF71E554D9400934851 /* PiDownload.h in Headers */,
+				02460E471E56972800934851 /* PiDownloadTaskImp.h in Headers */,
 				02460DFB1E554DEC00934851 /* PiDownloadLogger.h in Headers */,
 				02460E071E554ED600934851 /* PiDownloadTask.h in Headers */,
 				02460E011E554E8200934851 /* PiDownloader.h in Headers */,

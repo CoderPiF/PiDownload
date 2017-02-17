@@ -7,7 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "PiDownloadTask.h"
 
 @interface PiDownloadStorage : NSObject
+@property (nonatomic, readonly) NSArray<PiDownloadTask *> *tasks;
 
++ (PiDownloadStorage *) storageWithIdentifier:(NSString *)identifier;
+
+- (PiDownloadTask *) findTaskWithId:(NSUInteger)taskId;
+- (PiDownloadTask *) findTaskWithUrlString:(NSString *)urlString;
+
+- (PiDownloadTask *) addTaskWithUrl:(NSString *)urlString;
+- (void) removeTask:(PiDownloadTask *)task;
+
+- (void) saveTaskList;
 @end

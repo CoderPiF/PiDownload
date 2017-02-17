@@ -8,17 +8,56 @@
 
 #import "PiDownloadTask.h"
 #import "PiDownloader.h"
+#import "PiDownloadTaskImp.h"
 
 @interface PiDownloadTask ()
 {
-    NSTimeInterval _runningTime;
     NSTimeInterval _lastRunningTime;
+    
+    int64_t _totalSize;
+    int64_t _receivedSize;
 }
-@property (nonatomic, strong) NSURLSessionDownloadTask *task;
 @property (nonatomic, strong) NSData *resumeData;
+@property (nonatomic, assign) NSTimeInterval runningTime;
+@property (nonatomic, strong) NSURLSessionDownloadTask *task;
+
+@property (nonatomic, weak) id<PiDownloadTaskCreator> taskCreator;
 @end
 
 @implementation PiDownloadTask
+
+// MARK: - NSCoding
+#define kDownloadURLKey     @"DownloadUrl"
+#define kResumeDataKey      @"ResumeData"
+#define kRunningTimeKey     @"RunningTime"
+#define kTotalSizeKey       @"TotalSize"
+#define kReceivedSizeKey    @"ReceivedSize"
+#define kUserDataKey        @"UserData"
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:self.downloadURL forKey:kDownloadURLKey];
+    [aCoder encodeObject:self.resumeData forKey:kResumeDataKey];
+    [aCoder encodeObject:@(self.runningTime) forKey:kRunningTimeKey];
+    [aCoder encodeObject:@(self.totalSize) forKey:kTotalSizeKey];
+    [aCoder encodeObject:@(self.receivedSize) forKey:kReceivedSizeKey];
+    [aCoder encodeObject:self.userData forKey:kUserDataKey];
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super init];
+    if (self)
+    {
+        _downloadURL = [aDecoder decodeObjectForKey:kDownloadURLKey];
+        _resumeData = [aDecoder decodeObjectForKey:kResumeDataKey];
+        _runningTime = [[aDecoder decodeObjectForKey:kRunningTimeKey] doubleValue];
+        _totalSize = [[aDecoder decodeObjectForKey:kTotalSizeKey] longLongValue];
+        _receivedSize = [[aDecoder decodeObjectForKey:kReceivedSizeKey] longLongValue];
+        _userData = [aDecoder decodeObjectForKey:kUserDataKey];
+    }
+    return self;
+}
+
 
 // MARK: - Init
 + (PiDownloadTask *) taskWithURL:(NSString *)url
@@ -47,10 +86,13 @@
 {
     if (_task == task) return;
     
-    if (_task != nil)
+    [_task removeObserver:self forKeyPath:kTaskStateKeyPath];
+    if (task == nil)
     {
-        [_task removeObserver:self forKeyPath:kTaskStateKeyPath];
+        _totalSize = self.totalSize;
+        _receivedSize = self.receivedSize;
     }
+    
     _task = task;
     [_task addObserver:self forKeyPath:kTaskStateKeyPath options:NSKeyValueObservingOptionNew context:nil];
     _runningTime = 0;
@@ -98,14 +140,12 @@
 
 - (BOOL) isValidresumeData
 {
-    return [PiDownloadTask isValidresumeData:_resumeData];
+    return [PiDownloadTask isValidresumeData:self.resumeData];
 }
 
 - (void) setResumeData:(NSData *)resumeData
 {
-    if (_resumeData == resumeData) return;
     if (![PiDownloadTask isValidresumeData:resumeData]) return;
-    
     _resumeData = resumeData;
 }
 
@@ -142,16 +182,19 @@
 
 - (PiDownloadTaskState) state
 {
+    if (_task == nil) return PiDownloadTaskState_Error;
     return (PiDownloadTaskState)_task.state;
 }
 
 - (int64_t) totalSize
 {
+    if (_task == nil) return _totalSize;
     return _task.countOfBytesExpectedToReceive;
 }
 
 - (int64_t) receivedSize
 {
+    if (_task == nil) return _receivedSize;
     return _task.countOfBytesReceived;
 }
 
@@ -170,8 +213,18 @@
     return (NSTimeInterval) (self.totalSize - self.receivedSize) / self.speed;
 }
 
+- (void) ready
+{
+    if (_task != nil) return;
+    if ([_taskCreator respondsToSelector:@selector(onDownloadTaskCreate:)])
+    {
+        self.task = [_taskCreator onDownloadTaskCreate:self];
+    }
+}
+
 - (void) resume
 {
+    [self ready];
     [_task resume];
 }
 
@@ -188,6 +241,7 @@
 // MARK: - Downloader
 - (void) onDownloader:(PiDownloader *)downloader didCompleteWithError:(NSError *)error
 {
+    self.task = nil;
     if ([_delegate respondsToSelector:@selector(onPiDownloadTask:downloadError:)])
     {
         [_delegate onPiDownloadTask:self downloadError:error];
