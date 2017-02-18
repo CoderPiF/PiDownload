@@ -19,6 +19,4 @@
 
 - (PiDownloadTask *) addTaskWithUrl:(NSString *)urlString;
 - (void) removeTask:(PiDownloadTask *)task;
-
-- (void) saveTaskList;
 @end

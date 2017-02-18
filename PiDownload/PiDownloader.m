@@ -11,7 +11,14 @@
 #import "PiDownloadTaskImp.h"
 #import "PiDownloadStorage.h"
 
+#ifdef PIDOWNLOAD_IOS
+#import "Reachability.h"
+#endif
+
 @interface PiDownloader ()<NSURLSessionDownloadDelegate, PiDownloadTaskCreator>
+#ifdef PIDOWNLOAD_IOS
+@property (nonatomic, strong) NSMutableArray *waitNetworkTaskList;
+#endif
 @property (nonatomic, strong) PiDownloadStorage *storage;
 @property (nonatomic, strong) NSURLSession *backgroundSession;
 @end
@@ -39,6 +46,11 @@
     return s_shared;
 }
 
+- (void) dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (instancetype) initWithIdentifier:(NSString *)identifier
 {
     self = [super init];
@@ -49,6 +61,9 @@
         [self initBgSession];
         _storage = [PiDownloadStorage storageWithIdentifier:_identifier];
         [self readyTaskList];
+#ifdef PIDOWNLOAD_IOS
+        [self watchNetwork];
+#endif
     }
     return self;
 }
@@ -64,6 +79,7 @@
 - (PiDownloadTask *) addTaskWithUrl:(NSString *)urlString
 {
     PiDownloadTask *task = [_storage addTaskWithUrl:urlString];
+    task.taskCreator = self;
     [task resume];
     return task;
 }
@@ -102,6 +118,18 @@
     {
         task.taskCreator = self;
         [task ready];
+        
+        if (task.state == PiDownloadTaskState_Running)
+        {
+            if (_config.autoStartOnLaunch)
+            {
+                [task resume];
+            }
+            else
+            {
+                task.state = PiDownloadTaskState_Suspend;
+            }
+        }
     }
 }
 
@@ -126,14 +154,15 @@
     
     if (error.code == NSURLErrorCancelled)
     {
-        task.resumeData = nil;
-        [_storage removeTask:task];
-        PI_INFO_LOG(@"Cancel Download Task with URL : %@", task.downloadURL);
+        if (task.state == PiDownloadTaskState_Canceling)
+        {
+            [_storage removeTask:task];
+            PI_INFO_LOG(@"Cancel Download Task with URL : %@", task.downloadURL);
+        }
     }
     else
     {
         task.resumeData = error.userInfo[NSURLSessionDownloadTaskResumeData];
-        [_storage saveTaskList];
     }
     
     [task onDownloader:self didCompleteWithError:error];
@@ -143,7 +172,11 @@
 {
     PI_INFO_LOG(@"Got download finish");
     PiDownloadTask *task = [_storage findTaskWithId:downloadTask.taskIdentifier];
-    if (task == nil) return;
+    if (task == nil)
+    {
+        [downloadTask cancel];
+        return;
+    }
     
     PI_INFO_LOG(@"Task finish with url : %@", task.downloadURL);
     [task onDownloader:self didFinishToURL:location];
@@ -157,6 +190,11 @@
 totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
 {
     PiDownloadTask *task = [_storage findTaskWithId:downloadTask.taskIdentifier];
+    if (task == nil)
+    {
+        [downloadTask cancel];
+        return;
+    }
     [task onDownloader:self didWriteData:bytesWritten totalWritten:totalBytesWritten totalExpected:totalBytesExpectedToWrite];
 }
 
@@ -170,4 +208,61 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
     _bgCompletionHandler = nil;
 }
 
+// MARK: - Reachability
+#ifdef PIDOWNLOAD_IOS
+- (void) stopAllTaskForNoNetwork
+{
+    _waitNetworkTaskList = [NSMutableArray array];
+    NSArray *array = _storage.tasks.copy;
+    for (PiDownloadTask *task in array)
+    {
+        if (task.state == PiDownloadTaskState_Running)
+        {
+            [_waitNetworkTaskList addObject:task];
+            [task suspend];
+        }
+    }
+}
+
+- (void) resumeAllTaskForNetwork
+{
+    for (PiDownloadTask *task in _waitNetworkTaskList)
+    {
+        if (task.state == PiDownloadTaskState_Suspend) // 等待网络恢复过程中状态可能发送变化，例如取消下载，例如蜂窝手动下载
+        {
+            [task resume];
+        }
+    }
+    _waitNetworkTaskList = nil;
+}
+
+- (void) reachabilityChange:(NSNotification *)notification
+{
+    Reachability *reach = [notification object];
+    if ([reach isKindOfClass:[Reachability class]])
+    {
+        NetworkStatus status = [reach currentReachabilityStatus];
+        switch (status) {
+            case NotReachable: [self stopAllTaskForNoNetwork]; break;
+            case ReachableViaWiFi: [self resumeAllTaskForNetwork]; break;
+            case ReachableViaWWAN:
+            {
+                if (_config.autoStopOnWWAN)
+                {
+                    [self stopAllTaskForNoNetwork];
+                }
+                break;
+            }
+        }
+    }
+}
+
+- (void) watchNetwork
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reachabilityChange:)
+                                                 name:kReachabilityChangedNotification
+                                               object:nil];
+}
+#endif
 @end

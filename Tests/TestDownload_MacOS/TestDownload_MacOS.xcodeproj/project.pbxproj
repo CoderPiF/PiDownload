@@ -14,6 +14,8 @@
 		02460E2B1E55819800934851 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02460E291E55819800934851 /* Main.storyboard */; };
 		02460E3D1E55822E00934851 /* PiDownload.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02460E381E5581B800934851 /* PiDownload.framework */; };
 		02460E3F1E55823700934851 /* PiDownload.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 02460E381E5581B800934851 /* PiDownload.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		02460E551E58AAE900934851 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02460E541E58AAE900934851 /* SystemConfiguration.framework */; };
+		02460E591E58AB5100934851 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02460E581E58AB5100934851 /* CoreFoundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +74,8 @@
 		02460E2A1E55819800934851 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		02460E2C1E55819800934851 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		02460E321E5581B800934851 /* PiDownload.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PiDownload.xcodeproj; path = ../../PiDownload.xcodeproj; sourceTree = "<group>"; };
+		02460E541E58AAE900934851 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		02460E581E58AB5100934851 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +83,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				02460E591E58AB5100934851 /* CoreFoundation.framework in Frameworks */,
+				02460E551E58AAE900934851 /* SystemConfiguration.framework in Frameworks */,
 				02460E3D1E55822E00934851 /* PiDownload.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -92,6 +98,7 @@
 				02460E321E5581B800934851 /* PiDownload.xcodeproj */,
 				02460E1D1E55819800934851 /* TestDownload_MacOS */,
 				02460E1C1E55819800934851 /* Products */,
+				02460E531E58AAE900934851 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -133,6 +140,15 @@
 				02460E3A1E5581B800934851 /* PiDownload.framework */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		02460E531E58AAE900934851 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				02460E581E58AB5100934851 /* CoreFoundation.framework */,
+				02460E541E58AAE900934851 /* SystemConfiguration.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

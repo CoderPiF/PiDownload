@@ -9,7 +9,7 @@
 #import "ViewController.h"
 #import <PiDownload/PiDownload.h>
 
-@interface ViewController () <NSTableViewDelegate, NSTableViewDataSource>
+@interface ViewController () <NSTableViewDelegate, NSTableViewDataSource, PiDownloadLoggerProtocol>
 @property (weak) IBOutlet NSTextField *urlTextField;
 @property (weak) IBOutlet NSTableView *downloadTableView;
 @end
@@ -34,6 +34,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [PiDownloadLogger setLogger:self];
     _downloadTableView.delegate = self;
     _downloadTableView.dataSource = self;
     [_downloadTableView reloadData];
@@ -52,6 +53,12 @@
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
 {
     return [PiDownloader SharedObject].tasks.count;
+}
+
+// MARK: - PiDownloadLoggerProtocol
+- (void) onPiDownloadLoggerWithLevel:(PiDownloadLoggerLevel)level msg:(NSString *)msg
+{
+    NSLog(@"[%d] %@", level, msg);
 }
 
 @end

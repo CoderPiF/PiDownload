@@ -8,14 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@class PiDownloadTask;
-@protocol PiDownloadTaskDelegate <NSObject>
-@optional
-- (void) onPiDownloadTask:(PiDownloadTask *)task didFinishDownloadToFile:(NSURL *)location;
-- (void) onPiDownloadTask:(PiDownloadTask *)task downloadError:(NSError *)error;
-- (void) onPiDownloadTask:(PiDownloadTask *)task didUpdateProgress:(float)progress;
-@end
-
 typedef NS_ENUM(NSInteger, PiDownloadTaskState)
 {
     PiDownloadTaskState_Error       = -1,
@@ -25,6 +17,15 @@ typedef NS_ENUM(NSInteger, PiDownloadTaskState)
     PiDownloadTaskState_Canceling   = 2,
     PiDownloadTaskState_Completed   = 3,
 };
+
+@class PiDownloadTask;
+@protocol PiDownloadTaskDelegate <NSObject>
+@optional
+- (void) onPiDownloadTask:(PiDownloadTask *)task didStateChange:(PiDownloadTaskState)state;
+- (void) onPiDownloadTask:(PiDownloadTask *)task didFinishDownloadToFile:(NSURL *)location;
+- (void) onPiDownloadTask:(PiDownloadTask *)task downloadError:(NSError *)error;
+- (void) onPiDownloadTask:(PiDownloadTask *)task didUpdateProgress:(float)progress;
+@end
 
 @interface PiDownloadTask : NSObject
 @property (nonatomic, readonly) NSUInteger identifier;

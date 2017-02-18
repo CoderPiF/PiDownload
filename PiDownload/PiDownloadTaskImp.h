@@ -19,6 +19,7 @@
 @class PiDownloader;
 @interface PiDownloadTask (Downloader)
 @property (nonatomic) NSData *resumeData;
+@property (nonatomic) PiDownloadTaskState state;
 @property (weak) id<PiDownloadTaskCreator> taskCreator;
 
 - (void) ready;
@@ -29,8 +30,16 @@
 @end
 
 // MARK: - for Storage
+@protocol PiDownloadTaskResumeData <NSObject>
+- (void) onPidDownloadTask:(PiDownloadTask *)task saveResumeData:(NSData *)resumeData;
+- (NSData *) onPiDownloadTaskReadResumeData:(PiDownloadTask *)task;
+@end
+
 @interface PiDownloadTask (Storage) <NSCoding>
+@property (weak) id<PiDownloadTaskResumeData> resumeDataStorage;
 + (PiDownloadTask *) taskWithURL:(NSString *)url;
+
+- (void) stopAndSaveResumeData;
 @end
 
 #endif /* PiDownloadTaskImp_h */

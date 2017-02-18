@@ -9,9 +9,15 @@
 #import <Foundation/Foundation.h>
 #import "PiDownloadTask.h"
 
+@interface PiDownloadConfig : NSObject
+@property (nonatomic, assign) BOOL autoStartOnLaunch;
+@property (nonatomic, assign) BOOL autoStopOnWWAN;
+@end
+
 typedef void(^BgDownloadCompletionHandler)();
 @interface PiDownloader : NSObject
 @property (nonatomic, readonly) NSString *identifier;
+@property (nonatomic, strong) PiDownloadConfig *config;
 @property (nonatomic, readonly) NSArray<PiDownloadTask *> *tasks;
 @property (nonatomic, copy) BgDownloadCompletionHandler bgCompletionHandler;
 
