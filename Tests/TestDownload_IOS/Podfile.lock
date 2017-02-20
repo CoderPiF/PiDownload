@@ -1,0 +1,16 @@
+PODS:
+  - PiDownload (1.0.0)
+
+DEPENDENCIES:
+  - PiDownload (from `../../PiDownload.podspec`)
+
+EXTERNAL SOURCES:
+  PiDownload:
+    :podspec: "../../PiDownload.podspec"
+
+SPEC CHECKSUMS:
+  PiDownload: f7e4a5850591af79650a429571d94e74376718dd
+
+PODFILE CHECKSUM: c54f430e8c591bf270effcae7cd7dea487153b14
+
+COCOAPODS: 1.2.0

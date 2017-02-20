@@ -13,32 +13,8 @@
 		02460EA91E5AED2400934851 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02460EA71E5AED2400934851 /* Main.storyboard */; };
 		02460EAB1E5AED2400934851 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02460EAA1E5AED2400934851 /* Assets.xcassets */; };
 		02460EAE1E5AED2400934851 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02460EAC1E5AED2400934851 /* LaunchScreen.storyboard */; };
-		02CF320D1E5AEDFF0065E377 /* PiDownload.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02CF320A1E5AEDED0065E377 /* PiDownload.framework */; };
+		BF6B0A1861A45B71B0786156 /* Pods_TestDownload_IOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74AC8CC90A72F7E302AD9C3D /* Pods_TestDownload_IOS.framework */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		02CF32071E5AEDED0065E377 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 02CF32021E5AEDED0065E377 /* PiDownload.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 02460DDB1E554D3800934851;
-			remoteInfo = "PiDownload-MacOS";
-		};
-		02CF32091E5AEDED0065E377 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 02CF32021E5AEDED0065E377 /* PiDownload.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 02460DEB1E554D6700934851;
-			remoteInfo = "PiDownload-iOS";
-		};
-		02CF320B1E5AEDFA0065E377 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 02CF32021E5AEDED0065E377 /* PiDownload.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 02460DEA1E554D6700934851;
-			remoteInfo = "PiDownload-iOS";
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		02460E9B1E5AED2400934851 /* TestDownload_IOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestDownload_IOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -51,7 +27,9 @@
 		02460EAA1E5AED2400934851 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		02460EAD1E5AED2400934851 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		02460EAF1E5AED2400934851 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		02CF32021E5AEDED0065E377 /* PiDownload.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PiDownload.xcodeproj; path = ../../../PiDownload.xcodeproj; sourceTree = "<group>"; };
+		74AC8CC90A72F7E302AD9C3D /* Pods_TestDownload_IOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestDownload_IOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		81F930D375E9EBCA3B34E51F /* Pods-TestDownload_IOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestDownload_IOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-TestDownload_IOS/Pods-TestDownload_IOS.release.xcconfig"; sourceTree = "<group>"; };
+		CE8A78094035F9A3F24068DE /* Pods-TestDownload_IOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestDownload_IOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TestDownload_IOS/Pods-TestDownload_IOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,7 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				02CF320D1E5AEDFF0065E377 /* PiDownload.framework in Frameworks */,
+				BF6B0A1861A45B71B0786156 /* Pods_TestDownload_IOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +49,8 @@
 			children = (
 				02460E9D1E5AED2400934851 /* TestDownload_IOS */,
 				02460E9C1E5AED2400934851 /* Products */,
+				D1A208E13EECCD755F0B2CC8 /* Pods */,
+				5AD35F15E89639CEDE928F89 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -85,7 +65,6 @@
 		02460E9D1E5AED2400934851 /* TestDownload_IOS */ = {
 			isa = PBXGroup;
 			children = (
-				02CF32021E5AEDED0065E377 /* PiDownload.xcodeproj */,
 				02460EA11E5AED2400934851 /* AppDelegate.h */,
 				02460EA21E5AED2400934851 /* AppDelegate.m */,
 				02460EA41E5AED2400934851 /* ViewController.h */,
@@ -107,13 +86,21 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		02CF32031E5AEDED0065E377 /* Products */ = {
+		5AD35F15E89639CEDE928F89 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				02CF32081E5AEDED0065E377 /* PiDownload.framework */,
-				02CF320A1E5AEDED0065E377 /* PiDownload.framework */,
+				74AC8CC90A72F7E302AD9C3D /* Pods_TestDownload_IOS.framework */,
 			);
-			name = Products;
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D1A208E13EECCD755F0B2CC8 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				CE8A78094035F9A3F24068DE /* Pods-TestDownload_IOS.debug.xcconfig */,
+				81F930D375E9EBCA3B34E51F /* Pods-TestDownload_IOS.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -123,14 +110,16 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 02460EB21E5AED2400934851 /* Build configuration list for PBXNativeTarget "TestDownload_IOS" */;
 			buildPhases = (
+				4D468FFAB83A1DD62E4C6411 /* [CP] Check Pods Manifest.lock */,
 				02460E971E5AED2400934851 /* Sources */,
 				02460E981E5AED2400934851 /* Frameworks */,
 				02460E991E5AED2400934851 /* Resources */,
+				984F5C975DA09F69D80119C0 /* [CP] Embed Pods Frameworks */,
+				50C36E6E8A228756A57D14F3 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				02CF320C1E5AEDFA0065E377 /* PBXTargetDependency */,
 			);
 			name = TestDownload_IOS;
 			productName = TestDownload_IOS;
@@ -164,35 +153,12 @@
 			mainGroup = 02460E921E5AED2400934851;
 			productRefGroup = 02460E9C1E5AED2400934851 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 02CF32031E5AEDED0065E377 /* Products */;
-					ProjectRef = 02CF32021E5AEDED0065E377 /* PiDownload.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				02460E9A1E5AED2400934851 /* TestDownload_IOS */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		02CF32081E5AEDED0065E377 /* PiDownload.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = PiDownload.framework;
-			remoteRef = 02CF32071E5AEDED0065E377 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		02CF320A1E5AEDED0065E377 /* PiDownload.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = PiDownload.framework;
-			remoteRef = 02CF32091E5AEDED0065E377 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		02460E991E5AED2400934851 /* Resources */ = {
@@ -207,6 +173,54 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		4D468FFAB83A1DD62E4C6411 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		50C36E6E8A228756A57D14F3 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TestDownload_IOS/Pods-TestDownload_IOS-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		984F5C975DA09F69D80119C0 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TestDownload_IOS/Pods-TestDownload_IOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		02460E971E5AED2400934851 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -219,14 +233,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		02CF320C1E5AEDFA0065E377 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "PiDownload-iOS";
-			targetProxy = 02CF320B1E5AEDFA0065E377 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		02460EA71E5AED2400934851 /* Main.storyboard */ = {
@@ -340,6 +346,7 @@
 		};
 		02460EB31E5AED2400934851 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CE8A78094035F9A3F24068DE /* Pods-TestDownload_IOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 3SQSZ2P8DJ;
@@ -352,6 +359,7 @@
 		};
 		02460EB41E5AED2400934851 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 81F930D375E9EBCA3B34E51F /* Pods-TestDownload_IOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 3SQSZ2P8DJ;

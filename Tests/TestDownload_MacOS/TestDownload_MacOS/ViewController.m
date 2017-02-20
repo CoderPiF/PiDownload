@@ -79,7 +79,7 @@
     [_taskOperateBtn setAction:@selector(operateTask:)];
     
     PiDownloadConfig *config = [PiDownloadConfig new];
-    config.autoSaveResumeSize = 1024 * 1024 * 10;
+    config.autoSaveResumeSize = 1024 * 1024 * 2;
     config.maxDownloadCount = 2;
     [PiDownloader SharedObject].config = config;
 }

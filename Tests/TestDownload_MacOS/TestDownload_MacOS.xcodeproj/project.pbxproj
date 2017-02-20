@@ -12,42 +12,10 @@
 		02460E261E55819800934851 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02460E251E55819800934851 /* ViewController.m */; };
 		02460E281E55819800934851 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02460E271E55819800934851 /* Assets.xcassets */; };
 		02460E2B1E55819800934851 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02460E291E55819800934851 /* Main.storyboard */; };
-		02460E3D1E55822E00934851 /* PiDownload.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02460E381E5581B800934851 /* PiDownload.framework */; };
-		02460E3F1E55823700934851 /* PiDownload.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 02460E381E5581B800934851 /* PiDownload.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		02460E551E58AAE900934851 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02460E541E58AAE900934851 /* SystemConfiguration.framework */; };
 		02460E591E58AB5100934851 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02460E581E58AB5100934851 /* CoreFoundation.framework */; };
+		DD9C4AF7ECCF71FC5716DE99 /* Pods_TestDownload_MacOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E57814F91C90222DD4DDDEAE /* Pods_TestDownload_MacOS.framework */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		02460E371E5581B800934851 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 02460E321E5581B800934851 /* PiDownload.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 02460DDB1E554D3800934851;
-			remoteInfo = "PiDownload-MacOS";
-		};
-		02460E391E5581B800934851 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 02460E321E5581B800934851 /* PiDownload.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 02460DEB1E554D6700934851;
-			remoteInfo = "PiDownload-iOS";
-		};
-		02460E3B1E55821F00934851 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 02460E321E5581B800934851 /* PiDownload.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 02460DDA1E554D3800934851;
-			remoteInfo = "PiDownload-MacOS";
-		};
-		02460E401E55823700934851 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 02460E321E5581B800934851 /* PiDownload.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 02460DDA1E554D3800934851;
-			remoteInfo = "PiDownload-MacOS";
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		02460E421E55823700934851 /* Embed Frameworks */ = {
@@ -56,7 +24,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				02460E3F1E55823700934851 /* PiDownload.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -73,9 +40,11 @@
 		02460E271E55819800934851 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		02460E2A1E55819800934851 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		02460E2C1E55819800934851 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		02460E321E5581B800934851 /* PiDownload.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PiDownload.xcodeproj; path = ../../PiDownload.xcodeproj; sourceTree = "<group>"; };
 		02460E541E58AAE900934851 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		02460E581E58AB5100934851 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		724622202AF978A8E9E0EC50 /* Pods-TestDownload_MacOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestDownload_MacOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TestDownload_MacOS/Pods-TestDownload_MacOS.debug.xcconfig"; sourceTree = "<group>"; };
+		D13EA3A155D4CC0CDF1A495A /* Pods-TestDownload_MacOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestDownload_MacOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-TestDownload_MacOS/Pods-TestDownload_MacOS.release.xcconfig"; sourceTree = "<group>"; };
+		E57814F91C90222DD4DDDEAE /* Pods_TestDownload_MacOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestDownload_MacOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,7 +54,7 @@
 			files = (
 				02460E591E58AB5100934851 /* CoreFoundation.framework in Frameworks */,
 				02460E551E58AAE900934851 /* SystemConfiguration.framework in Frameworks */,
-				02460E3D1E55822E00934851 /* PiDownload.framework in Frameworks */,
+				DD9C4AF7ECCF71FC5716DE99 /* Pods_TestDownload_MacOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,10 +64,10 @@
 		02460E121E55819800934851 = {
 			isa = PBXGroup;
 			children = (
-				02460E321E5581B800934851 /* PiDownload.xcodeproj */,
 				02460E1D1E55819800934851 /* TestDownload_MacOS */,
 				02460E1C1E55819800934851 /* Products */,
 				02460E531E58AAE900934851 /* Frameworks */,
+				0831CE996E9ED84738FF8AB6 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -133,22 +102,23 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		02460E331E5581B800934851 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				02460E381E5581B800934851 /* PiDownload.framework */,
-				02460E3A1E5581B800934851 /* PiDownload.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		02460E531E58AAE900934851 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				02460E581E58AB5100934851 /* CoreFoundation.framework */,
 				02460E541E58AAE900934851 /* SystemConfiguration.framework */,
+				E57814F91C90222DD4DDDEAE /* Pods_TestDownload_MacOS.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		0831CE996E9ED84738FF8AB6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				724622202AF978A8E9E0EC50 /* Pods-TestDownload_MacOS.debug.xcconfig */,
+				D13EA3A155D4CC0CDF1A495A /* Pods-TestDownload_MacOS.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -158,16 +128,17 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 02460E2F1E55819800934851 /* Build configuration list for PBXNativeTarget "TestDownload_MacOS" */;
 			buildPhases = (
+				94F0C32A2E3E3A90D606DA6F /* [CP] Check Pods Manifest.lock */,
 				02460E171E55819800934851 /* Sources */,
 				02460E181E55819800934851 /* Frameworks */,
 				02460E191E55819800934851 /* Resources */,
 				02460E421E55823700934851 /* Embed Frameworks */,
+				9F2813C23FA082A8F4DA555B /* [CP] Embed Pods Frameworks */,
+				B59484585F6655E9CB6A3505 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				02460E3C1E55821F00934851 /* PBXTargetDependency */,
-				02460E411E55823700934851 /* PBXTargetDependency */,
 			);
 			name = TestDownload_MacOS;
 			productName = TestDownload_MacOS;
@@ -201,35 +172,12 @@
 			mainGroup = 02460E121E55819800934851;
 			productRefGroup = 02460E1C1E55819800934851 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 02460E331E5581B800934851 /* Products */;
-					ProjectRef = 02460E321E5581B800934851 /* PiDownload.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				02460E1A1E55819800934851 /* TestDownload_MacOS */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		02460E381E5581B800934851 /* PiDownload.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = PiDownload.framework;
-			remoteRef = 02460E371E5581B800934851 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		02460E3A1E5581B800934851 /* PiDownload.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = PiDownload.framework;
-			remoteRef = 02460E391E5581B800934851 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		02460E191E55819800934851 /* Resources */ = {
@@ -243,6 +191,54 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		94F0C32A2E3E3A90D606DA6F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		9F2813C23FA082A8F4DA555B /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TestDownload_MacOS/Pods-TestDownload_MacOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B59484585F6655E9CB6A3505 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TestDownload_MacOS/Pods-TestDownload_MacOS-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		02460E171E55819800934851 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -255,19 +251,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		02460E3C1E55821F00934851 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "PiDownload-MacOS";
-			targetProxy = 02460E3B1E55821F00934851 /* PBXContainerItemProxy */;
-		};
-		02460E411E55823700934851 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "PiDownload-MacOS";
-			targetProxy = 02460E401E55823700934851 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		02460E291E55819800934851 /* Main.storyboard */ = {
@@ -370,11 +353,12 @@
 		};
 		02460E301E55819800934851 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 724622202AF978A8E9E0EC50 /* Pods-TestDownload_MacOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 3SQSZ2P8DJ;
-				FRAMEWORK_SEARCH_PATHS = "";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = TestDownload_MacOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				OTHER_CODE_SIGN_FLAGS = "--deep";
@@ -385,11 +369,12 @@
 		};
 		02460E311E55819800934851 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D13EA3A155D4CC0CDF1A495A /* Pods-TestDownload_MacOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 3SQSZ2P8DJ;
-				FRAMEWORK_SEARCH_PATHS = "";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = TestDownload_MacOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				OTHER_CODE_SIGN_FLAGS = "--deep";
