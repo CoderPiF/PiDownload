@@ -12,10 +12,10 @@
 #import "PiDownloadTaskImp.h"
 #import <CommonCrypto/CommonDigest.h>
 
-#ifdef PIDOWNLOAD_MACOS
-#import <AppKit/AppKit.h>
-#else
+#if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
+#else
+#import <AppKit/AppKit.h>
 #endif
 
 static NSString * MD5String(NSString *string)
@@ -112,7 +112,7 @@ static NSString * MD5String(NSString *string)
 
 - (void) appWillTerminate
 {
-#ifdef PIDOWNLOAD_MACOS
+#if !(TARGET_OS_IPHONE)
     for (PiDownloadTask *task in _tasks)
     {
         [task stopAndSaveResumeData];
@@ -137,10 +137,10 @@ static NSString * MD5String(NSString *string)
     {
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(appWillTerminate)
-#ifdef PIDOWNLOAD_MACOS
-                                                     name:NSApplicationWillTerminateNotification
-#else
+#if TARGET_OS_IPHONE
                                                      name:UIApplicationWillTerminateNotification
+#else
+                                                     name:NSApplicationWillTerminateNotification
 #endif
                                                    object:nil];
         _storagePath = [self.class StoragePathWithId:identifier];

@@ -12,7 +12,7 @@
 #import "PiDownloadStorage.h"
 #import "PiDownloadTaskController.h"
 
-#ifdef PIDOWNLOAD_IOS
+#if TARGET_OS_IPHONE
 #import "Reachability.h"
 #endif
 
@@ -69,7 +69,7 @@
 @end
 
 @interface PiDownloader ()<NSURLSessionDownloadDelegate, PiDownloadTaskCreator>
-#ifdef PIDOWNLOAD_IOS
+#if TARGET_OS_IPHONE
 @property (nonatomic, strong) NSMutableArray *waitNetworkTaskList;
 @property (nonatomic, assign) NetworkStatus networkStatus;
 #endif
@@ -143,7 +143,7 @@
         _storage = [PiDownloadStorage storageWithIdentifier:_sessionIdentifier];
         _taskController.storage = _storage;
         [self readyTaskList];
-#ifdef PIDOWNLOAD_IOS
+#if TARGET_OS_IPHONE
         [self watchNetwork];
 #endif
     }
@@ -167,7 +167,7 @@
     
     _taskController.autoStartNextTask = _config.autoStartNextTask;
     _taskController.maxDownloadCount = _config.maxDownloadCount;
-#ifdef PIDOWNLOAD_IOS
+#if TARGET_OS_IPHONE
     if (_networkStatus == ReachableViaWWAN && !_config.autoStopOnWWAN)
     {
         [self resumeAllTaskForNetwork];
@@ -327,7 +327,7 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
 }
 
 // MARK: - Reachability
-#ifdef PIDOWNLOAD_IOS
+#if TARGET_OS_IPHONE
 - (void) stopAllTaskForNoNetwork
 {
     _taskController.disableAutoStart = YES;
