@@ -255,7 +255,11 @@
     }
     else
     {
-        task.resumeData = error.userInfo[NSURLSessionDownloadTaskResumeData];
+        NSData *data = error.userInfo[NSURLSessionDownloadTaskResumeData];
+        if ([PiDownloadStorage isValidresumeData:data])
+        {
+            task.resumeData = data;
+        }
     }
     
     [task onDownloader:self didCompleteWithError:error];

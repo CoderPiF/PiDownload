@@ -27,7 +27,8 @@
 
 - (IBAction)addTask:(NSButton *)sender
 {
-    [[PiDownloader SharedObject] addTaskWithUrl:_urlTextField.stringValue];
+    PiDownloadTask *task = [[PiDownloader SharedObject] addTaskWithUrl:_urlTextField.stringValue];
+    task.userData = _urlTextField.stringValue;
     [_downloadTableView reloadData];
 }
 
@@ -100,7 +101,7 @@
 - (void) updateStatus
 {
     switch (_task.state) {
-        case PiDownloadTaskState_Error: _taskOperateBtn.title = @"发送错误"; break;
+        case PiDownloadTaskState_Error: _taskOperateBtn.title = @"发生错误"; break;
         case PiDownloadTaskState_Waiting: _taskOperateBtn.title = @"等待中"; break;
         case PiDownloadTaskState_Running: _taskOperateBtn.title = @"暂停"; break;
         case PiDownloadTaskState_Suspend: _taskOperateBtn.title = @"开始"; break;
@@ -111,9 +112,12 @@
 
 - (void) setTask:(PiDownloadTask *)task
 {
+    if (_task == task) return;
+    if (_task.delegate == self) _task.delegate = nil;
+    
     _task = task;
     _task.delegate = self;
-    _urlStringLabel.stringValue = task.downloadURL;
+    _urlStringLabel.stringValue = (NSString *)task.userData;
     _progressIndicator.doubleValue = task.progress * 100;
     
     [self updateStatus];
@@ -132,6 +136,7 @@
 
 - (void) updateTime
 {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateTime) object:nil];
     if (_task.speed > 1024)
     {
         _speedLabel.stringValue = [NSString stringWithFormat:@"%.02lf KB/s", _task.speed / 1024];

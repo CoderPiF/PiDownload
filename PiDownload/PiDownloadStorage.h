@@ -14,8 +14,10 @@
 @property (nonatomic, readonly) NSArray<PiDownloadTask *> *tasks;
 
 + (PiDownloadStorage *) storageWithIdentifier:(NSString *)identifier;
+
 + (PiDownloadConfig *) readLastConfigWithIdentifier:(NSString *)identifier;
 + (BOOL) saveConfig:(PiDownloadConfig *)config forIdentifier:(NSString *)identifier;
++ (BOOL) isValidresumeData:(NSData *)resumeData;
 
 + (NSString *) getLocalPathFromResumeData:(NSData *)resumeData;
 

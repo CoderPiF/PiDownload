@@ -146,16 +146,9 @@
 }
 
 // MARK: - ResumeData
-+ (BOOL) isValidresumeData:(NSData *)resumeData
-{
-    NSString *localFilePath = [PiDownloadStorage getLocalPathFromResumeData:resumeData];
-    if (localFilePath.length < 1) return NO;
-    return [[NSFileManager defaultManager] fileExistsAtPath:localFilePath];
-}
-
 - (BOOL) isValidresumeData
 {
-    return [PiDownloadTask isValidresumeData:self.resumeData];
+    return [PiDownloadStorage isValidresumeData:self.resumeData];
 }
 
 - (void) setResumeData:(NSData *)resumeData
@@ -218,16 +211,19 @@
 
 - (float) progress
 {
+    if (self.totalSize < 1) return 0;
     return (float)self.receivedSize / (float)self.totalSize;
 }
 
 - (float) speed
 {
+    if (self.runningTime < 1) return 0;
     return (float)self.receivedSize / (float)self.runningTime;
 }
 
 - (NSTimeInterval) estimationTime
 {
+    if (self.speed < 1) return 0;
     return (NSTimeInterval) (self.totalSize - self.receivedSize) / self.speed;
 }
 
@@ -272,7 +268,7 @@
 - (void) stopAndSaveResumeData
 {
     [_task cancelByProducingResumeData:^(NSData *resumeData) {
-        if ([self.class isValidresumeData:resumeData])
+        if ([PiDownloadStorage isValidresumeData:resumeData])
         {
             self.resumeData = resumeData;
         }
@@ -333,7 +329,7 @@
     {
         _savingResumenData = YES;
         [_task cancelByProducingResumeData:^(NSData *resumeData) {
-            if ([self.class isValidresumeData:resumeData])
+            if ([PiDownloadStorage isValidresumeData:resumeData])
             {
                 self.resumeData = resumeData;
                 _lastSaveResumeSize = totalWritten;

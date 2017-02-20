@@ -211,6 +211,13 @@ static NSString * MD5String(NSString *string)
     return localFilePath;
 }
 
++ (BOOL) isValidresumeData:(NSData *)resumeData
+{
+    NSString *localFilePath = [PiDownloadStorage getLocalPathFromResumeData:resumeData];
+    if (localFilePath.length < 1) return NO;
+    return [[NSFileManager defaultManager] fileExistsAtPath:localFilePath];
+}
+
 + (NSString *) localPathWithResumeFile:(NSString *)resumeFilePath
 {
     return [resumeFilePath stringByAppendingPathExtension:@"tmp"];
