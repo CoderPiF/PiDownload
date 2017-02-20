@@ -20,13 +20,20 @@
 typedef void(^BgDownloadCompletionHandler)();
 @interface PiDownloader : NSObject
 @property (nonatomic, readonly) NSString *identifier;
+@property (nonatomic, readonly) NSString *sessionIdentifier;
 @property (nonatomic, strong) PiDownloadConfig *config;
 @property (nonatomic, readonly) NSArray<PiDownloadTask *> *tasks;
 @property (nonatomic, copy) BgDownloadCompletionHandler bgCompletionHandler;
 
 + (PiDownloader *) SharedObject;
-- (instancetype) initWithIdentifier:(NSString *)identifier config:(PiDownloadConfig *)config;
++ (PiDownloader *) downloaderWithIdentifier:(NSString *)identifier config:(PiDownloadConfig *)config;
 
 - (PiDownloadTask *) addTaskWithUrl:(NSString *)urlString;
 - (BOOL) removeTaskWithUrl:(NSString *)urlString;
+@end
+
+@interface PiDownloader (Manager)
++ (BOOL) IsPiDownloaderSessionIdentifier:(NSString *)sessionIdentifier;
++ (PiDownloader *) DownloaderWithSessionIdentifier:(NSString *)sessionIdentifier;
++ (PiDownloader *) CreateDownloaderWithSessionIdentifier:(NSString *)sessionIdentifier;
 @end

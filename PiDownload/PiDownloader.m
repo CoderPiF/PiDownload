@@ -78,6 +78,10 @@
 @property (nonatomic, strong) NSURLSession *backgroundSession;
 @end
 
+@interface PiDownloader (Manager_Imp)
++ (void) AddDownloader:(PiDownloader *)downloader;
+@end
+
 @implementation PiDownloader
 
 // MARK: - Init
@@ -86,7 +90,7 @@
     return [NSString stringWithFormat:@"%@.PiDownload", [[NSBundle mainBundle] bundleIdentifier]];
 }
 
-+ (NSString *) FormatIdentifier:(NSString *)identifier
++ (NSString *) SessionIdentifier:(NSString *)identifier
 {
     return [NSString stringWithFormat:@"%@.%@", self.DefaultIdentifier, identifier];
 }
@@ -101,6 +105,18 @@
     return s_shared;
 }
 
++ (PiDownloader *) downloaderWithIdentifier:(NSString *)identifier config:(PiDownloadConfig *)config
+{
+    NSString *sessionIdentifier = [self SessionIdentifier:identifier];
+    PiDownloader *downloader = [self DownloaderWithSessionIdentifier:sessionIdentifier];
+    if (downloader != nil)
+    {
+        return downloader;
+    }
+    
+    return [[self alloc] initWithIdentifier:identifier config:config];
+}
+
 - (void) dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -108,7 +124,7 @@
 
 - (instancetype) initWithIdentifier:(NSString *)identifier
 {
-    NSString *tmpId = [self.class FormatIdentifier:identifier];
+    NSString *tmpId = [self.class SessionIdentifier:identifier];
     PiDownloadConfig *config = [PiDownloadStorage readLastConfigWithIdentifier:tmpId];
     return [self initWithIdentifier:identifier config:config];
 }
@@ -118,25 +134,28 @@
     self = [super init];
     if (self)
     {
-        _identifier = [self.class FormatIdentifier:identifier];
+        _identifier = identifier;
+        _sessionIdentifier = [self.class SessionIdentifier:identifier];
         _taskController = [PiDownloadTaskController new];
         self.config = config;
-        PI_INFO_LOG(@"Init Downloader With Identifier : %@", _identifier);
+        PI_INFO_LOG(@"Init Downloader With Identifier : %@", identifier);
         [self initBgSession];
-        _storage = [PiDownloadStorage storageWithIdentifier:_identifier];
+        _storage = [PiDownloadStorage storageWithIdentifier:_sessionIdentifier];
         _taskController.storage = _storage;
         [self readyTaskList];
 #ifdef PIDOWNLOAD_IOS
         [self watchNetwork];
 #endif
     }
+    
+    [self.class AddDownloader:self];
     return self;
 }
 
 - (void) initBgSession
 {
     assert(_backgroundSession == nil);
-    NSURLSessionConfiguration *config = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:_identifier];
+    NSURLSessionConfiguration *config = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:_sessionIdentifier];
     _backgroundSession = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:[NSOperationQueue mainQueue]];
 }
 
@@ -144,7 +163,7 @@
 - (void) setConfig:(PiDownloadConfig *)config
 {
     _config = config;
-    [PiDownloadStorage saveConfig:_config forIdentifier:_identifier];
+    [PiDownloadStorage saveConfig:_config forIdentifier:_sessionIdentifier];
     
     _taskController.autoStartNextTask = _config.autoStartNextTask;
     _taskController.maxDownloadCount = _config.maxDownloadCount;
@@ -298,11 +317,13 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
 - (void) URLSessionDidFinishEventsForBackgroundURLSession:(NSURLSession *)session
 {
     PI_INFO_LOG(@"DidFinishEventsForBackgroundURLSession");
-    if (_bgCompletionHandler != nil)
-    {
-        _bgCompletionHandler();
-    }
-    _bgCompletionHandler = nil;
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        if (_bgCompletionHandler != nil)
+        {
+            _bgCompletionHandler();
+        }
+        _bgCompletionHandler = nil;
+    });
 }
 
 // MARK: - Reachability
@@ -364,4 +385,54 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
                                                object:nil];
 }
 #endif
+@end
+
+
+// MARK: - Manager
+@implementation PiDownloader (Manager)
++ (NSMutableArray<PiDownloader *> *) Downloaders
+{
+    static NSMutableArray *s_list = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        s_list = [NSMutableArray array];
+    });
+    return s_list;
+}
+
++ (void) AddDownloader:(PiDownloader *)downloader
+{
+    if ([self DownloaderWithSessionIdentifier:downloader.sessionIdentifier] == nil)
+    {
+        [self.Downloaders addObject:downloader];
+    }
+}
+
++ (BOOL) IsPiDownloaderSessionIdentifier:(NSString *)sessionIdentifier
+{
+    return [sessionIdentifier hasPrefix:self.DefaultIdentifier];
+}
+
++ (PiDownloader *) DownloaderWithSessionIdentifier:(NSString *)sessionIdentifier
+{
+    if (![self IsPiDownloaderSessionIdentifier:sessionIdentifier]) return nil;
+    
+    for (PiDownloader *downloader in self.Downloaders)
+    {
+        if ([downloader.sessionIdentifier isEqualToString:sessionIdentifier])
+        {
+            return downloader;
+        }
+    }
+    return nil;
+}
+
++ (PiDownloader *) CreateDownloaderWithSessionIdentifier:(NSString *)sessionIdentifier
+{
+    if (![self IsPiDownloaderSessionIdentifier:sessionIdentifier]) return nil;
+    
+    NSString *defaultId = [NSString stringWithFormat:@"%@.", self.DefaultIdentifier];
+    NSString *identifier = [sessionIdentifier stringByReplacingOccurrencesOfString:defaultId withString:@""];
+    return [[self alloc] initWithIdentifier:identifier];
+}
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import <PiDownload/PiDownload.h>
 
 @interface AppDelegate ()
 
@@ -18,6 +19,19 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     return YES;
+}
+
+- (void) application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler
+{
+    if ([PiDownloader IsPiDownloaderSessionIdentifier:identifier])
+    {
+        PiDownloader *downloader = [PiDownloader DownloaderWithSessionIdentifier:identifier];
+        if (downloader == nil)
+        {
+            downloader = [PiDownloader CreateDownloaderWithSessionIdentifier:identifier];
+        }
+        downloader.bgCompletionHandler = completionHandler;
+    }
 }
 
 
