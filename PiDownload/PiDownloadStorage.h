@@ -9,10 +9,15 @@
 #import <Foundation/Foundation.h>
 #import "PiDownloadTask.h"
 
+@class PiDownloadConfig;
 @interface PiDownloadStorage : NSObject
 @property (nonatomic, readonly) NSArray<PiDownloadTask *> *tasks;
 
 + (PiDownloadStorage *) storageWithIdentifier:(NSString *)identifier;
++ (PiDownloadConfig *) readLastConfigWithIdentifier:(NSString *)identifier;
++ (BOOL) saveConfig:(PiDownloadConfig *)config forIdentifier:(NSString *)identifier;
+
++ (NSString *) getLocalPathFromResumeData:(NSData *)resumeData;
 
 - (PiDownloadTask *) findTaskWithId:(NSUInteger)taskId;
 - (PiDownloadTask *) findTaskWithUrlString:(NSString *)urlString;

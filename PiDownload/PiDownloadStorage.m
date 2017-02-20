@@ -10,6 +10,7 @@
 
 #import "PiDownloadStorage.h"
 #import "PiDownloadLogger.h"
+#import "PiDownloader.h"
 #import "PiDownloadTaskImp.h"
 #import <CommonCrypto/CommonDigest.h>
 
@@ -35,6 +36,41 @@ static NSString * MD5String(NSString *string)
     return result;
 }
 
+@interface PiDownloadConfig (Storage) <NSCoding>
+@end
+
+@implementation PiDownloadConfig (Storage)
+#define kClassVersion           @"ClassVersion"
+#define kAutoSaveResumeSizeKey  @"AutoSaveResumeSizeKey"
+#define kAutoStopOnWWAN         @"AutoStopOnWWAN"
+#define kAutoStartOnLaunch      @"AutoStartOnLaunch"
++ (NSInteger) version
+{
+    return 1;
+}
+
+- (instancetype) initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super init];
+    if (self)
+    {
+        self.autoSaveResumeSize = [aDecoder decodeInt64ForKey:kAutoSaveResumeSizeKey];
+        self.autoStopOnWWAN = [aDecoder decodeBoolForKey:kAutoStopOnWWAN];
+        self.autoStartOnLaunch = [aDecoder decodeBoolForKey:kAutoStartOnLaunch];
+    }
+    return self;
+}
+
+- (void) encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeInteger:self.class.version forKey:kClassVersion];
+    [aCoder encodeBool:self.autoStartOnLaunch forKey:kAutoStartOnLaunch];
+    [aCoder encodeBool:self.autoStopOnWWAN forKey:kAutoStopOnWWAN];
+    [aCoder encodeInt64:self.autoSaveResumeSize forKey:kAutoSaveResumeSizeKey];
+}
+
+@end
+
 @interface PiDownloadStorage ()<PiDownloadTaskResumeData>
 {
     NSMutableArray<PiDownloadTask *> *_tasks;
@@ -58,6 +94,35 @@ static NSString * MD5String(NSString *string)
 + (PiDownloadStorage *) storageWithIdentifier:(NSString *)identifier
 {
     return [[PiDownloadStorage alloc] initWithIdentifier:identifier];
+}
+
++ (NSString *) ConfigPathWithIdentifier:(NSString *)identifier
+{
+    NSString *path = [self StoragePathWithId:identifier];
+    return [path stringByAppendingPathComponent:@"Config"];
+}
+
++ (PiDownloadConfig *) readLastConfigWithIdentifier:(NSString *)identifier
+{
+    NSString *path = [self ConfigPathWithIdentifier:identifier];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:path])
+    {
+        return [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+    }
+    return [PiDownloadConfig new];
+}
+
++ (BOOL) saveConfig:(PiDownloadConfig *)config forIdentifier:(NSString *)identifier
+{
+    NSString *path = [self ConfigPathWithIdentifier:identifier];
+    if (config == nil)
+    {
+        return [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
+    }
+    else
+    {
+        return [NSKeyedArchiver archiveRootObject:config toFile:path];
+    }
 }
 
 - (NSString *) tasksDataPath
@@ -166,6 +231,28 @@ static NSString * MD5String(NSString *string)
 }
 
 // MARK: - PiDownloadTaskResumeData
++ (NSString *) getLocalPathFromResumeData:(NSData *)resumeData
+{
+    if (resumeData == nil) return nil;
+    
+    NSError *error;
+    id resumeDictionary = [NSPropertyListSerialization propertyListWithData:resumeData options:NSPropertyListImmutable format:nil error:&error];
+    if (resumeDictionary == nil || error != nil) return nil;
+    
+    NSString *localFilePath = resumeDictionary[@"NSURLSessionResumeInfoLocalPath"];
+    if (localFilePath.length < 1)
+    {
+        localFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:resumeDictionary[@"NSURLSessionResumeInfoTempFileName"]];
+    }
+    
+    return localFilePath;
+}
+
++ (NSString *) localPathWithResumeFile:(NSString *)resumeFilePath
+{
+    return [resumeFilePath stringByAppendingPathExtension:@"tmp"];
+}
+
 - (NSString *) resumeDataPathWithTask:(PiDownloadTask *)task
 {
     NSString *name = MD5String(task.downloadURL);
@@ -175,22 +262,38 @@ static NSString * MD5String(NSString *string)
 - (void) onPidDownloadTask:(PiDownloadTask *)task saveResumeData:(NSData *)resumeData
 {
     NSString *path = [self resumeDataPathWithTask:task];
+    NSString *tmp = [self.class localPathWithResumeFile:path];
     if (resumeData == nil)
     {
         [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
+        [[NSFileManager defaultManager] removeItemAtPath:tmp error:nil];
     }
     else
     {
         [resumeData writeToFile:path atomically:YES];
+        
+        NSString *tmpTarget = [self.class getLocalPathFromResumeData:resumeData];
+        if (tmpTarget.length > 0)
+        {
+            [[NSFileManager defaultManager] copyItemAtPath:tmpTarget toPath:tmp error:nil];
+        }
     }
 }
 
 - (NSData *) onPiDownloadTaskReadResumeData:(PiDownloadTask *)task
 {
     NSString *path = [self resumeDataPathWithTask:task];
-    if ([[NSFileManager defaultManager] fileExistsAtPath:path])
+    NSString *tmp = [self.class localPathWithResumeFile:path];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if ([fileManager fileExistsAtPath:path])
     {
-        return [NSData dataWithContentsOfFile:path];
+        NSData *resumeData = [NSData dataWithContentsOfFile:path];
+        NSString *localPath = [self.class getLocalPathFromResumeData:resumeData];
+        if (localPath.length > 0 && [fileManager fileExistsAtPath:tmp] && ![fileManager fileExistsAtPath:localPath])
+        {
+            [fileManager copyItemAtPath:tmp toPath:localPath error:nil];
+        }
+        return resumeData;
     }
     return nil;
 }

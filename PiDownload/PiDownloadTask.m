@@ -10,6 +10,7 @@
 #import "PiDownloader.h"
 #import "PiDownloadTaskImp.h"
 #import "PiDownloadLogger.h"
+#import "PiDownloadStorage.h"
 
 @interface PiDownloadTask ()
 {
@@ -17,7 +18,11 @@
     
     int64_t _totalSize;
     int64_t _receivedSize;
+    
+    int64_t _lastSaveResumeSize;
+    BOOL    _savingResumenData;
 }
+@property (nonatomic, assign) int64_t autoSaveResumeSize;
 @property (nonatomic, assign) NSTimeInterval runningTime;
 @property (nonatomic, strong) NSURLSessionDownloadTask *task;
 
@@ -27,20 +32,29 @@
 
 @implementation PiDownloadTask
 
++ (NSInteger) version
+{
+    return 1;
+}
+
 // MARK: - NSCoding
+#define kClassVersion           @"ClassVersion"
 #define kDownloadURLKey         @"DownloadUrl"
 #define kDownloadStateKey       @"DownloadState"
 #define kRunningTimeKey         @"RunningTime"
 #define kTotalSizeKey           @"TotalSize"
 #define kReceivedSizeKey        @"ReceivedSize"
+#define kLastSaveResumeSize     @"LastSaveResumeSize"
 #define kUserDataKey            @"UserData"
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
+    [aCoder encodeInteger:self.class.version forKey:kClassVersion];
     [aCoder encodeObject:self.downloadURL forKey:kDownloadURLKey];
-    [aCoder encodeObject:@(self.state) forKey:kDownloadStateKey];
-    [aCoder encodeObject:@(self.runningTime) forKey:kRunningTimeKey];
-    [aCoder encodeObject:@(self.totalSize) forKey:kTotalSizeKey];
-    [aCoder encodeObject:@(self.receivedSize) forKey:kReceivedSizeKey];
+    [aCoder encodeInteger:self.state forKey:kDownloadStateKey];
+    [aCoder encodeDouble:self.runningTime forKey:kRunningTimeKey];
+    [aCoder encodeInt64:self.totalSize forKey:kTotalSizeKey];
+    [aCoder encodeInt64:self.receivedSize forKey:kReceivedSizeKey];
+    [aCoder encodeInt64:_lastSaveResumeSize forKey:kLastSaveResumeSize];
     [aCoder encodeObject:self.userData forKey:kUserDataKey];
 }
 
@@ -50,11 +64,12 @@
     if (self)
     {
         _downloadURL = [aDecoder decodeObjectForKey:kDownloadURLKey];
-        _state = [[aDecoder decodeObjectForKey:kDownloadStateKey] integerValue];
-        _runningTime = [[aDecoder decodeObjectForKey:kRunningTimeKey] doubleValue];
-        _totalSize = [[aDecoder decodeObjectForKey:kTotalSizeKey] longLongValue];
-        _receivedSize = [[aDecoder decodeObjectForKey:kReceivedSizeKey] longLongValue];
+        _state = [aDecoder decodeIntegerForKey:kDownloadStateKey];
+        _runningTime = [aDecoder decodeDoubleForKey:kRunningTimeKey];
+        _totalSize = [aDecoder decodeInt64ForKey:kTotalSizeKey];
+        _receivedSize = [aDecoder decodeInt64ForKey:kReceivedSizeKey];
         _userData = [aDecoder decodeObjectForKey:kUserDataKey];
+        _lastSaveResumeSize = [aDecoder decodeInt64ForKey:kLastSaveResumeSize];
     }
     return self;
 }
@@ -129,20 +144,8 @@
 // MARK: - ResumeData
 + (BOOL) isValidresumeData:(NSData *)resumeData
 {
-    if (resumeData == nil) return NO;
-    
-    NSError *error;
-    id resumeDictionary = [NSPropertyListSerialization propertyListWithData:resumeData options:NSPropertyListImmutable format:nil error:&error];
-    if (resumeDictionary == nil || error != nil) return NO;
-    
-    NSString *localFilePath = resumeDictionary[@"NSURLSessionResumeInfoLocalPath"];
-    if (localFilePath.length < 1)
-    {
-        localFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:resumeDictionary[@"NSURLSessionResumeInfoTempFileName"]];
-    }
-    
+    NSString *localFilePath = [PiDownloadStorage getLocalPathFromResumeData:resumeData];
     if (localFilePath.length < 1) return NO;
-    
     return [[NSFileManager defaultManager] fileExistsAtPath:localFilePath];
 }
 
@@ -230,7 +233,6 @@
     if ([_taskCreator respondsToSelector:@selector(onDownloadTaskCreate:)])
     {
         self.task = [_taskCreator onDownloadTaskCreate:self];
-        self.resumeData = nil;
     }
 }
 
@@ -255,7 +257,10 @@
 - (void) stopAndSaveResumeData
 {
     [_task cancelByProducingResumeData:^(NSData *resumeData) {
-        self.resumeData = resumeData;
+        if ([self.class isValidresumeData:resumeData])
+        {
+            self.resumeData = resumeData;
+        }
     }];
 }
 
@@ -277,6 +282,12 @@
     self.task = nil;
     if (self.state != PiDownloadTaskState_Running)
     {
+        return;
+    }
+    if (_savingResumenData)
+    {
+        _savingResumenData = NO;
+        [self resume];
         return;
     }
     
@@ -301,6 +312,18 @@
     if ([_delegate respondsToSelector:@selector(onPiDownloadTask:didUpdateProgress:)])
     {
         [_delegate onPiDownloadTask:self didUpdateProgress:self.progress];
+    }
+    
+    if (!_savingResumenData && _autoSaveResumeSize > 0 && totalWritten - _lastSaveResumeSize > _autoSaveResumeSize)
+    {
+        _savingResumenData = YES;
+        [_task cancelByProducingResumeData:^(NSData *resumeData) {
+            if ([self.class isValidresumeData:resumeData])
+            {
+                self.resumeData = resumeData;
+                _lastSaveResumeSize = totalWritten;
+            }
+        }];
     }
 }
 

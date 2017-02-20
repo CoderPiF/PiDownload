@@ -15,6 +15,9 @@
 #import "Reachability.h"
 #endif
 
+@implementation PiDownloadConfig
+@end
+
 @interface PiDownloader ()<NSURLSessionDownloadDelegate, PiDownloadTaskCreator>
 #ifdef PIDOWNLOAD_IOS
 @property (nonatomic, strong) NSMutableArray *waitNetworkTaskList;
@@ -53,10 +56,18 @@
 
 - (instancetype) initWithIdentifier:(NSString *)identifier
 {
+    NSString *tmpId = [self.class FormatIdentifier:identifier];
+    PiDownloadConfig *config = [PiDownloadStorage readLastConfigWithIdentifier:tmpId];
+    return [self initWithIdentifier:identifier config:config];
+}
+
+- (instancetype) initWithIdentifier:(NSString *)identifier config:(PiDownloadConfig *)config
+{
     self = [super init];
     if (self)
     {
         _identifier = [self.class FormatIdentifier:identifier];
+        self.config = config;
         PI_INFO_LOG(@"Init Downloader With Identifier : %@", _identifier);
         [self initBgSession];
         _storage = [PiDownloadStorage storageWithIdentifier:_identifier];
@@ -75,11 +86,29 @@
     _backgroundSession = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:[NSOperationQueue mainQueue]];
 }
 
+// MARK: - Config
+- (void) setConfig:(PiDownloadConfig *)config
+{
+    _config = config;
+    [PiDownloadStorage saveConfig:_config forIdentifier:_identifier];
+    
+    for (PiDownloadTask *task in _storage.tasks)
+    {
+        task.autoSaveResumeSize = config.autoSaveResumeSize;
+    }
+}
+
 // MARK: - Task
+- (void) configTask:(PiDownloadTask *)task
+{
+    task.taskCreator = self;
+    task.autoSaveResumeSize = _config.autoSaveResumeSize;
+}
+
 - (PiDownloadTask *) addTaskWithUrl:(NSString *)urlString
 {
     PiDownloadTask *task = [_storage addTaskWithUrl:urlString];
-    task.taskCreator = self;
+    [self configTask:task];
     [task resume];
     return task;
 }
@@ -116,7 +145,7 @@
 {
     for (PiDownloadTask *task in _storage.tasks)
     {
-        task.taskCreator = self;
+        [self configTask:task];
         [task ready];
         
         if (task.state == PiDownloadTaskState_Running)

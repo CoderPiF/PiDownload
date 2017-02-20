@@ -58,7 +58,7 @@
 // MARK: - PiDownloadLoggerProtocol
 - (void) onPiDownloadLoggerWithLevel:(PiDownloadLoggerLevel)level msg:(NSString *)msg
 {
-    NSLog(@"[%d] %@", level, msg);
+    NSLog(@"[%ld] %@", level, msg);
 }
 
 @end
@@ -76,6 +76,10 @@
     
     [_taskOperateBtn setTarget:self];
     [_taskOperateBtn setAction:@selector(operateTask:)];
+    
+    PiDownloadConfig *config = [PiDownloadConfig new];
+    config.autoSaveResumeSize = 1024 * 1024 * 10;
+    [PiDownloader SharedObject].config = config;
 }
 
 - (void) operateTask:(NSButton *)btn

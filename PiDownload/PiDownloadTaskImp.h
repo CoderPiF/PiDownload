@@ -21,6 +21,7 @@
 @property (nonatomic) NSData *resumeData;
 @property (nonatomic) PiDownloadTaskState state;
 @property (weak) id<PiDownloadTaskCreator> taskCreator;
+@property (nonatomic) int64_t autoSaveResumeSize;
 
 - (void) ready;
 - (BOOL) isValidresumeData;
