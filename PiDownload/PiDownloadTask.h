@@ -10,7 +10,8 @@
 
 typedef NS_ENUM(NSInteger, PiDownloadTaskState)
 {
-    PiDownloadTaskState_Error       = -1,
+    PiDownloadTaskState_Error       = -2,
+    PiDownloadTaskState_Waiting     = -1,
     
     PiDownloadTaskState_Running     = 0,
     PiDownloadTaskState_Suspend     = 1,

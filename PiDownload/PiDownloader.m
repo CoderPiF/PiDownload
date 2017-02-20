@@ -10,18 +10,70 @@
 #import "PiDownloadLogger.h"
 #import "PiDownloadTaskImp.h"
 #import "PiDownloadStorage.h"
+#import "PiDownloadTaskController.h"
 
 #ifdef PIDOWNLOAD_IOS
 #import "Reachability.h"
 #endif
 
 @implementation PiDownloadConfig
+- (instancetype) init
+{
+    self = [super init];
+    if (self)
+    {
+        _autoStartOnLaunch = YES;
+        _autoStopOnWWAN = YES;
+        _autoSaveResumeSize = 0;
+        _maxDownloadCount = 1;
+        _autoStartNextTask = YES;
+    }
+    return self;
+}
+
+#define kClassVersion           @"ClassVersion"
+#define kAutoSaveResumeSizeKey  @"AutoSaveResumeSizeKey"
+#define kAutoStopOnWWAN         @"AutoStopOnWWAN"
+#define kAutoStartOnLaunch      @"AutoStartOnLaunch"
+#define kMaxDownloadCount       @"MaxDownloadCount"
+#define kAutoStartNextTask      @"AutoStartNextTask"
++ (NSInteger) version
+{
+    return 1;
+}
+
+- (instancetype) initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super init];
+    if (self)
+    {
+        self.autoSaveResumeSize = [aDecoder decodeInt64ForKey:kAutoSaveResumeSizeKey];
+        self.autoStopOnWWAN = [aDecoder decodeBoolForKey:kAutoStopOnWWAN];
+        self.autoStartOnLaunch = [aDecoder decodeBoolForKey:kAutoStartOnLaunch];
+        self.maxDownloadCount = [aDecoder decodeIntegerForKey:kMaxDownloadCount];
+        self.autoStartNextTask = [aDecoder decodeBoolForKey:kAutoStartNextTask];
+    }
+    return self;
+}
+
+- (void) encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeInteger:self.class.version forKey:kClassVersion];
+    [aCoder encodeBool:self.autoStartOnLaunch forKey:kAutoStartOnLaunch];
+    [aCoder encodeBool:self.autoStopOnWWAN forKey:kAutoStopOnWWAN];
+    [aCoder encodeInt64:self.autoSaveResumeSize forKey:kAutoSaveResumeSizeKey];
+    [aCoder encodeInteger:self.maxDownloadCount forKey:kMaxDownloadCount];
+    [aCoder encodeBool:self.autoStartNextTask forKey:kAutoStartNextTask];
+}
+
 @end
 
 @interface PiDownloader ()<NSURLSessionDownloadDelegate, PiDownloadTaskCreator>
 #ifdef PIDOWNLOAD_IOS
 @property (nonatomic, strong) NSMutableArray *waitNetworkTaskList;
+@property (nonatomic, assign) NetworkStatus networkStatus;
 #endif
+@property (nonatomic, strong) PiDownloadTaskController *taskController;
 @property (nonatomic, strong) PiDownloadStorage *storage;
 @property (nonatomic, strong) NSURLSession *backgroundSession;
 @end
@@ -67,10 +119,12 @@
     if (self)
     {
         _identifier = [self.class FormatIdentifier:identifier];
+        _taskController = [PiDownloadTaskController new];
         self.config = config;
         PI_INFO_LOG(@"Init Downloader With Identifier : %@", _identifier);
         [self initBgSession];
         _storage = [PiDownloadStorage storageWithIdentifier:_identifier];
+        _taskController.storage = _storage;
         [self readyTaskList];
 #ifdef PIDOWNLOAD_IOS
         [self watchNetwork];
@@ -92,6 +146,15 @@
     _config = config;
     [PiDownloadStorage saveConfig:_config forIdentifier:_identifier];
     
+    _taskController.autoStartNextTask = _config.autoStartNextTask;
+    _taskController.maxDownloadCount = _config.maxDownloadCount;
+#ifdef PIDOWNLOAD_IOS
+    if (_networkStatus == ReachableViaWWAN && !_config.autoStopOnWWAN)
+    {
+        [self resumeAllTaskForNetwork];
+    }
+#endif
+    
     for (PiDownloadTask *task in _storage.tasks)
     {
         task.autoSaveResumeSize = config.autoSaveResumeSize;
@@ -101,6 +164,7 @@
 // MARK: - Task
 - (void) configTask:(PiDownloadTask *)task
 {
+    task.controller = _taskController;
     task.taskCreator = self;
     task.autoSaveResumeSize = _config.autoSaveResumeSize;
 }
@@ -148,7 +212,7 @@
         [self configTask:task];
         [task ready];
         
-        if (task.state == PiDownloadTaskState_Running)
+        if (task.state == PiDownloadTaskState_Running || task.state == PiDownloadTaskState_Waiting)
         {
             if (_config.autoStartOnLaunch)
             {
@@ -241,6 +305,7 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
 #ifdef PIDOWNLOAD_IOS
 - (void) stopAllTaskForNoNetwork
 {
+    _taskController.disableAutoStart = YES;
     _waitNetworkTaskList = [NSMutableArray array];
     NSArray *array = _storage.tasks.copy;
     for (PiDownloadTask *task in array)
@@ -255,6 +320,7 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
 
 - (void) resumeAllTaskForNetwork
 {
+    _taskController.disableAutoStart = NO;
     for (PiDownloadTask *task in _waitNetworkTaskList)
     {
         if (task.state == PiDownloadTaskState_Suspend) // 等待网络恢复过程中状态可能发送变化，例如取消下载，例如蜂窝手动下载
@@ -270,8 +336,8 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
     Reachability *reach = [notification object];
     if ([reach isKindOfClass:[Reachability class]])
     {
-        NetworkStatus status = [reach currentReachabilityStatus];
-        switch (status) {
+        _networkStatus = [reach currentReachabilityStatus];
+        switch (_networkStatus) {
             case NotReachable: [self stopAllTaskForNoNetwork]; break;
             case ReachableViaWiFi: [self resumeAllTaskForNetwork]; break;
             case ReachableViaWWAN:

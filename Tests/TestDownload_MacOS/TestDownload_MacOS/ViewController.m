@@ -79,6 +79,7 @@
     
     PiDownloadConfig *config = [PiDownloadConfig new];
     config.autoSaveResumeSize = 1024 * 1024 * 10;
+    config.maxDownloadCount = 2;
     [PiDownloader SharedObject].config = config;
 }
 
@@ -98,7 +99,14 @@
 
 - (void) updateStatus
 {
-    _taskOperateBtn.title = (_task.state == PiDownloadTaskState_Running) ? @"暂停" : @"开始";
+    switch (_task.state) {
+        case PiDownloadTaskState_Error: _taskOperateBtn.title = @"发送错误"; break;
+        case PiDownloadTaskState_Waiting: _taskOperateBtn.title = @"等待中"; break;
+        case PiDownloadTaskState_Running: _taskOperateBtn.title = @"暂停"; break;
+        case PiDownloadTaskState_Suspend: _taskOperateBtn.title = @"开始"; break;
+        case PiDownloadTaskState_Canceling: _taskOperateBtn.title = @"取消"; break;
+        case PiDownloadTaskState_Completed: _taskOperateBtn.title = @"完成"; break;
+    }
 }
 
 - (void) setTask:(PiDownloadTask *)task
@@ -158,4 +166,8 @@
     _progressIndicator.doubleValue = task.progress * 100;
 }
 
+- (void) onPiDownloadTask:(PiDownloadTask *)task didStateChange:(PiDownloadTaskState)state
+{
+    [self updateStatus];
+}
 @end

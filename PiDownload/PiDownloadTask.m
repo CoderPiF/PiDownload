@@ -11,6 +11,7 @@
 #import "PiDownloadTaskImp.h"
 #import "PiDownloadLogger.h"
 #import "PiDownloadStorage.h"
+#import "PiDownloadTaskController.h"
 
 @interface PiDownloadTask ()
 {
@@ -26,6 +27,7 @@
 @property (nonatomic, assign) NSTimeInterval runningTime;
 @property (nonatomic, strong) NSURLSessionDownloadTask *task;
 
+@property (nonatomic, weak) PiDownloadTaskController *controller;
 @property (nonatomic, weak) id<PiDownloadTaskCreator> taskCreator;
 @property (nonatomic, weak) id<PiDownloadTaskResumeData> resumeDataStorage;
 @end
@@ -50,7 +52,8 @@
 {
     [aCoder encodeInteger:self.class.version forKey:kClassVersion];
     [aCoder encodeObject:self.downloadURL forKey:kDownloadURLKey];
-    [aCoder encodeInteger:self.state forKey:kDownloadStateKey];
+    PiDownloadTaskState state = (self.state == PiDownloadTaskState_Running) ? PiDownloadTaskState_Waiting : self.state;
+    [aCoder encodeInteger:state forKey:kDownloadStateKey];
     [aCoder encodeDouble:self.runningTime forKey:kRunningTimeKey];
     [aCoder encodeInt64:self.totalSize forKey:kTotalSizeKey];
     [aCoder encodeInt64:self.receivedSize forKey:kReceivedSizeKey];
@@ -86,6 +89,7 @@
     self = [super init];
     if (self)
     {
+        _state = PiDownloadTaskState_Waiting;
         _downloadURL = url;
     }
     return self;
@@ -239,6 +243,11 @@
 - (void) setState:(PiDownloadTaskState)state
 {
     if (_state == state) return;
+    if (_state == PiDownloadTaskState_Running)
+    {
+        _state = state;
+        [_controller onTaskStopRunning:self];
+    }
     
     _state = state;
     if ([_delegate respondsToSelector:@selector(onPiDownloadTask:didStateChange:)])
@@ -249,6 +258,12 @@
 
 - (void) resume
 {
+    if (!_savingResumenData && !_controller.canStartTask)
+    {
+        self.state = PiDownloadTaskState_Waiting;
+        return;
+    }
+    
     [self ready];
     self.state = PiDownloadTaskState_Running;
     [_task resume];
@@ -286,8 +301,8 @@
     }
     if (_savingResumenData)
     {
-        _savingResumenData = NO;
         [self resume];
+        _savingResumenData = NO;
         return;
     }
     

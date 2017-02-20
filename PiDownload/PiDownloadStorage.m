@@ -6,8 +6,6 @@
 //  Copyright © 2017年 Coder.Pi. All rights reserved.
 //
 
-// TODO: 隔断下载（根据已经下载的小大确定）保存Task.resumeData:保存方法，先cancelSaveResume，然后在resume
-
 #import "PiDownloadStorage.h"
 #import "PiDownloadLogger.h"
 #import "PiDownloader.h"
@@ -35,41 +33,6 @@ static NSString * MD5String(NSString *string)
     
     return result;
 }
-
-@interface PiDownloadConfig (Storage) <NSCoding>
-@end
-
-@implementation PiDownloadConfig (Storage)
-#define kClassVersion           @"ClassVersion"
-#define kAutoSaveResumeSizeKey  @"AutoSaveResumeSizeKey"
-#define kAutoStopOnWWAN         @"AutoStopOnWWAN"
-#define kAutoStartOnLaunch      @"AutoStartOnLaunch"
-+ (NSInteger) version
-{
-    return 1;
-}
-
-- (instancetype) initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super init];
-    if (self)
-    {
-        self.autoSaveResumeSize = [aDecoder decodeInt64ForKey:kAutoSaveResumeSizeKey];
-        self.autoStopOnWWAN = [aDecoder decodeBoolForKey:kAutoStopOnWWAN];
-        self.autoStartOnLaunch = [aDecoder decodeBoolForKey:kAutoStartOnLaunch];
-    }
-    return self;
-}
-
-- (void) encodeWithCoder:(NSCoder *)aCoder
-{
-    [aCoder encodeInteger:self.class.version forKey:kClassVersion];
-    [aCoder encodeBool:self.autoStartOnLaunch forKey:kAutoStartOnLaunch];
-    [aCoder encodeBool:self.autoStopOnWWAN forKey:kAutoStopOnWWAN];
-    [aCoder encodeInt64:self.autoSaveResumeSize forKey:kAutoSaveResumeSizeKey];
-}
-
-@end
 
 @interface PiDownloadStorage ()<PiDownloadTaskResumeData>
 {
