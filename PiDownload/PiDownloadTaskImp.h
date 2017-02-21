@@ -20,6 +20,7 @@
 @class PiDownloader;
 @interface PiDownloadTask (Downloader)
 @property (weak) PiDownloadTaskController *controller;
+@property (nonatomic) NSString *localPath;
 @property (nonatomic) NSData *resumeData;
 @property (nonatomic) PiDownloadTaskState state;
 @property (weak) id<PiDownloadTaskCreator> taskCreator;

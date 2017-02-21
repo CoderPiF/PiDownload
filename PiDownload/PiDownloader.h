@@ -28,7 +28,7 @@ typedef void(^BgDownloadCompletionHandler)();
 + (PiDownloader *) SharedObject;
 + (PiDownloader *) downloaderWithIdentifier:(NSString *)identifier config:(PiDownloadConfig *)config;
 
-- (PiDownloadTask *) addTaskWithUrl:(NSString *)urlString;
+- (PiDownloadTask *) addTaskWithUrl:(NSString *)urlString toLocalPath:(NSString *)localPath;
 - (BOOL) removeTaskWithUrl:(NSString *)urlString;
 @end
 

@@ -188,9 +188,10 @@
     task.autoSaveResumeSize = _config.autoSaveResumeSize;
 }
 
-- (PiDownloadTask *) addTaskWithUrl:(NSString *)urlString
+- (PiDownloadTask *) addTaskWithUrl:(NSString *)urlString toLocalPath:(NSString *)localPath
 {
     PiDownloadTask *task = [_storage addTaskWithUrl:urlString];
+    task.localPath = localPath;
     [self configTask:task];
     [task resume];
     return task;

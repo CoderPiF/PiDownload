@@ -311,6 +311,18 @@
 
 - (void) onDownloader:(PiDownloader *)downloader didFinishToURL:(NSURL *)location
 {
+    if (_localPath.length > 0)
+    {
+        NSURL *localUrl = [NSURL fileURLWithPath:_localPath];
+        NSError *error = nil;
+        if (![[NSFileManager defaultManager] moveItemAtURL:location toURL:localUrl error:&error])
+        {
+            [self onDownloader:downloader didCompleteWithError:error];
+            return;
+        }
+        location = localUrl;
+    }
+    
     self.state = PiDownloadTaskState_Completed;
     if ([_delegate respondsToSelector:@selector(onPiDownloadTask:didFinishDownloadToFile:)])
     {

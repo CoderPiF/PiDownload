@@ -31,6 +31,7 @@ typedef NS_ENUM(NSInteger, PiDownloadTaskState)
 @interface PiDownloadTask : NSObject
 @property (nonatomic, readonly) NSUInteger identifier;
 @property (nonatomic, readonly) NSString *downloadURL;
+@property (nonatomic, readonly) NSString *localPath;
 @property (nonatomic, readonly) PiDownloadTaskState state;
 @property (nonatomic, readonly) int64_t totalSize;
 @property (nonatomic, readonly) int64_t receivedSize;
