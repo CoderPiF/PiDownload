@@ -27,6 +27,7 @@
 
 - (void) ready;
 - (BOOL) isValidresumeData;
+- (void) addLocalPath:(NSString *)localPath;
 - (void) onDownloader:(PiDownloader *)downloader didCompleteWithError:(NSError *)error;
 - (void) onDownloader:(PiDownloader *)downloader didFinishToURL:(NSURL *)location;
 - (void) onDownloader:(PiDownloader *)downloader didWriteData:(int64_t)bytesWritten totalWritten:(int64_t)totalWritten totalExpected:(int64_t)totalExpected;

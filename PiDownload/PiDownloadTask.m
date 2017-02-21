@@ -23,6 +23,7 @@
     int64_t _lastSaveResumeSize;
     BOOL    _savingResumenData;
 }
+@property (nonatomic, strong) NSMutableArray *localPaths;
 @property (nonatomic, assign) int64_t autoSaveResumeSize;
 @property (nonatomic, assign) NSTimeInterval runningTime;
 @property (nonatomic, strong) NSURLSessionDownloadTask *task;
@@ -47,7 +48,7 @@
 #define kTotalSizeKey           @"TotalSize"
 #define kReceivedSizeKey        @"ReceivedSize"
 #define kLastSaveResumeSizeKey  @"LastSaveResumeSize"
-#define kLocalPathKey           @"LocalPath"
+#define kLocalPathsKey          @"LocalPaths"
 #define kUserDataKey            @"UserData"
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
@@ -59,7 +60,7 @@
     [aCoder encodeInt64:self.totalSize forKey:kTotalSizeKey];
     [aCoder encodeInt64:self.receivedSize forKey:kReceivedSizeKey];
     [aCoder encodeInt64:_lastSaveResumeSize forKey:kLastSaveResumeSizeKey];
-    [aCoder encodeObject:self.localPath forKey:kLocalPathKey];
+    [aCoder encodeObject:self.localPaths forKey:kLocalPathsKey];
     [aCoder encodeObject:self.userData forKey:kUserDataKey];
 }
 
@@ -74,7 +75,7 @@
         _totalSize = [aDecoder decodeInt64ForKey:kTotalSizeKey];
         _receivedSize = [aDecoder decodeInt64ForKey:kReceivedSizeKey];
         _userData = [aDecoder decodeObjectForKey:kUserDataKey];
-        _localPath = [aDecoder decodeObjectForKey:kLocalPathKey];
+        _localPaths = ((NSArray *)[aDecoder decodeObjectForKey:kLocalPathsKey]).mutableCopy;
         _lastSaveResumeSize = [aDecoder decodeInt64ForKey:kLastSaveResumeSizeKey];
     }
     return self;
@@ -92,6 +93,7 @@
     self = [super init];
     if (self)
     {
+        _localPaths = [NSMutableArray array];
         _state = PiDownloadTaskState_Waiting;
         _downloadURL = url;
     }
@@ -145,6 +147,28 @@
                 [self updateRunningTime];
             }
         });
+    }
+}
+
+// MARK: - LocalPaths
+- (void) addLocalPath:(NSString *)localPath
+{
+    for (NSString *path in _localPaths)
+    {
+        if ([path isEqualToString:localPath])
+        {
+            return;
+        }
+    }
+    [_localPaths addObject:localPath];
+}
+
+- (void) saveToLocalPaths:(NSURL *)fileUrl
+{
+    NSFileManager *manager = [NSFileManager defaultManager];
+    for (NSString *path in _localPaths)
+    {
+        [manager copyItemAtURL:fileUrl toURL:[NSURL fileURLWithPath:path] error:nil];
     }
 }
 
@@ -314,17 +338,7 @@
 
 - (void) onDownloader:(PiDownloader *)downloader didFinishToURL:(NSURL *)location
 {
-    if (_localPath.length > 0)
-    {
-        NSURL *localUrl = [NSURL fileURLWithPath:_localPath];
-        NSError *error = nil;
-        if (![[NSFileManager defaultManager] moveItemAtURL:location toURL:localUrl error:&error])
-        {
-            [self onDownloader:downloader didCompleteWithError:error];
-            return;
-        }
-        location = localUrl;
-    }
+    [self saveToLocalPaths:location];
     
     self.state = PiDownloadTaskState_Completed;
     if ([_delegate respondsToSelector:@selector(onPiDownloadTask:didFinishDownloadToFile:)])

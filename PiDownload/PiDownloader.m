@@ -190,7 +190,7 @@
 - (PiDownloadTask *) addTaskWithUrl:(NSString *)urlString toLocalPath:(NSString *)localPath
 {
     PiDownloadTask *task = [_storage addTaskWithUrl:urlString];
-    task.localPath = localPath;
+    [task addLocalPath:localPath];
     [self configTask:task];
     [task resume];
     return task;
