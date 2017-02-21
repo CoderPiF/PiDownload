@@ -335,7 +335,8 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
     NSArray *array = _storage.tasks.copy;
     for (PiDownloadTask *task in array)
     {
-        if (task.state == PiDownloadTaskState_Running)
+        if (task.state == PiDownloadTaskState_Running ||
+            task.state == PiDownloadTaskState_Waiting)
         {
             [_waitNetworkTaskList addObject:task];
             [task suspend];
