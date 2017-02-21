@@ -25,9 +25,16 @@
 
 @implementation ViewController
 
+- (NSString *) localPathForUrl:(NSString *)url
+{
+    NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+    return [path stringByAppendingPathComponent:[url lastPathComponent]];
+}
+
 - (IBAction)addTask:(NSButton *)sender
 {
-    PiDownloadTask *task = [[PiDownloader SharedObject] addTaskWithUrl:_urlTextField.stringValue];
+    NSString *path = [self localPathForUrl:_urlTextField.stringValue];
+    PiDownloadTask *task = [[PiDownloader SharedObject] addTaskWithUrl:_urlTextField.stringValue toLocalPath:path];
     task.userData = _urlTextField.stringValue;
     [_downloadTableView reloadData];
 }

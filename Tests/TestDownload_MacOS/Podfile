@@ -2,5 +2,5 @@ platform :osx, '10.9'
 
 target 'TestDownload_MacOS' do
   use_frameworks!
-  pod 'PiDownload', :podspec => '../../PiDownload.podspec'
+  pod 'PiDownload', '~> 1.0.0'
 end

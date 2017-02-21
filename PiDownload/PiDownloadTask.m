@@ -40,24 +40,26 @@
 }
 
 // MARK: - NSCoding
-#define kClassVersion           @"ClassVersion"
+#define kClassVersionKey        @"ClassVersion"
 #define kDownloadURLKey         @"DownloadUrl"
 #define kDownloadStateKey       @"DownloadState"
 #define kRunningTimeKey         @"RunningTime"
 #define kTotalSizeKey           @"TotalSize"
 #define kReceivedSizeKey        @"ReceivedSize"
-#define kLastSaveResumeSize     @"LastSaveResumeSize"
+#define kLastSaveResumeSizeKey  @"LastSaveResumeSize"
+#define kLocalPathKey           @"LocalPath"
 #define kUserDataKey            @"UserData"
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
-    [aCoder encodeInteger:self.class.version forKey:kClassVersion];
+    [aCoder encodeInteger:self.class.version forKey:kClassVersionKey];
     [aCoder encodeObject:self.downloadURL forKey:kDownloadURLKey];
     PiDownloadTaskState state = (self.state == PiDownloadTaskState_Running) ? PiDownloadTaskState_Waiting : self.state;
     [aCoder encodeInteger:state forKey:kDownloadStateKey];
     [aCoder encodeDouble:self.runningTime forKey:kRunningTimeKey];
     [aCoder encodeInt64:self.totalSize forKey:kTotalSizeKey];
     [aCoder encodeInt64:self.receivedSize forKey:kReceivedSizeKey];
-    [aCoder encodeInt64:_lastSaveResumeSize forKey:kLastSaveResumeSize];
+    [aCoder encodeInt64:_lastSaveResumeSize forKey:kLastSaveResumeSizeKey];
+    [aCoder encodeObject:self.localPath forKey:kLocalPathKey];
     [aCoder encodeObject:self.userData forKey:kUserDataKey];
 }
 
@@ -72,7 +74,8 @@
         _totalSize = [aDecoder decodeInt64ForKey:kTotalSizeKey];
         _receivedSize = [aDecoder decodeInt64ForKey:kReceivedSizeKey];
         _userData = [aDecoder decodeObjectForKey:kUserDataKey];
-        _lastSaveResumeSize = [aDecoder decodeInt64ForKey:kLastSaveResumeSize];
+        _localPath = [aDecoder decodeObjectForKey:kLocalPathKey];
+        _lastSaveResumeSize = [aDecoder decodeInt64ForKey:kLastSaveResumeSizeKey];
     }
     return self;
 }
@@ -143,11 +146,6 @@
             }
         });
     }
-}
-
-- (void) setLocalPath:(NSString *)localPath
-{
-    _localPath = localPath;
 }
 
 // MARK: - ResumeData

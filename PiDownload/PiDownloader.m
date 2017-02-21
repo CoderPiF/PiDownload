@@ -154,7 +154,6 @@
 
 - (void) initBgSession
 {
-    assert(_backgroundSession == nil);
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:_sessionIdentifier];
     _backgroundSession = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:[NSOperationQueue mainQueue]];
 }
@@ -256,6 +255,15 @@
     return [_backgroundSession downloadTaskWithURL:[NSURL URLWithString:task.downloadURL]];
 }
 
+// MARK: - NSURLSessionDelegate
+- (void)URLSession:(NSURLSession *)session didBecomeInvalidWithError:(NSError *)error
+{
+    if (session == _backgroundSession)
+    {
+        [self initBgSession];
+    }
+}
+
 // MARK: - NSURLSessionDownloadDelegate
 - (void) URLSession:(NSURLSession *)session task:(NSURLSessionTask *)downloadTask didCompleteWithError:(NSError *)error
 {
@@ -318,13 +326,14 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
 - (void) URLSessionDidFinishEventsForBackgroundURLSession:(NSURLSession *)session
 {
     PI_INFO_LOG(@"DidFinishEventsForBackgroundURLSession");
-    dispatch_sync(dispatch_get_main_queue(), ^{
-        if (_bgCompletionHandler != nil)
-        {
-            _bgCompletionHandler();
-        }
+    if (_bgCompletionHandler != nil)
+    {
+        BgDownloadCompletionHandler handler = _bgCompletionHandler;
         _bgCompletionHandler = nil;
-    });
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            handler();
+        });
+    }
 }
 
 // MARK: - Reachability
