@@ -21,7 +21,7 @@ iOS / macOS 后台断点下载
 5. `autoStartNextTask` : 自动开始下一个等待中的任务。默认YES.
 
 ## 添加任务
-`[[PiDownloader SharedObject] addTaskWithUrl:@"http://xxx"]`
+`[[PiDownloader SharedObject] addTaskWithUrl:@"http://xxx" toLocalPath:@"/xxx/yourLocalPath"]`
 
 ## iOS 后台下载回调
 ```objective-c
