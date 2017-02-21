@@ -34,7 +34,7 @@ static NSString * MD5String(NSString *string)
     return result;
 }
 
-@interface PiDownloadStorage ()<PiDownloadTaskResumeData>
+@interface PiDownloadStorage ()<PiDownloadTaskStorage>
 {
     NSMutableArray<PiDownloadTask *> *_tasks;
     NSString *_storagePath;
@@ -186,7 +186,7 @@ static NSString * MD5String(NSString *string)
     [_tasks removeObject:task];
 }
 
-// MARK: - PiDownloadTaskResumeData
+// MARK: - PiDownloadTaskStorage
 + (NSString *) getLocalPathFromResumeData:(NSData *)resumeData
 {
     if (resumeData == nil) return nil;
