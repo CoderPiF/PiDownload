@@ -269,10 +269,10 @@
 {
     if (error == nil) return;
     
-    PI_INFO_LOG(@"Got download error");
     PiDownloadTask *task = [_storage findTaskWithId:downloadTask.taskIdentifier];
     if (task == nil) return;
     
+    PI_INFO_LOG(@"Got download error");
     if (error.code == NSURLErrorCancelled)
     {
         if (task.state == PiDownloadTaskState_Canceling)
@@ -295,13 +295,8 @@
 
 - (void) URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location
 {
-    PI_INFO_LOG(@"Got download finish");
     PiDownloadTask *task = [_storage findTaskWithId:downloadTask.taskIdentifier];
-    if (task == nil)
-    {
-        [downloadTask cancel];
-        return;
-    }
+    if (task == nil) return;
     
     PI_INFO_LOG(@"Task finish with url : %@", task.downloadURL);
     [task onDownloader:self didFinishToURL:location];

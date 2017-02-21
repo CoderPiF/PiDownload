@@ -100,7 +100,7 @@ static NSString * MD5String(NSString *string)
         _tasks = ((NSArray *)[NSKeyedUnarchiver unarchiveObjectWithFile:self.tasksDataPath]).mutableCopy;
         for (PiDownloadTask *task in _tasks)
         {
-            task.resumeDataStorage = self;
+            task.storage = self;
         }
     }
     
@@ -112,13 +112,6 @@ static NSString * MD5String(NSString *string)
 
 - (void) appWillTerminate
 {
-#if !(TARGET_OS_IPHONE)
-    for (PiDownloadTask *task in _tasks)
-    {
-        [task stopAndSaveResumeData];
-    }
-#endif
-    
     if (![NSKeyedArchiver archiveRootObject:_tasks toFile:self.tasksDataPath])
     {
         PI_ERROR_LOG(@"Save Task List Fail");
@@ -181,7 +174,7 @@ static NSString * MD5String(NSString *string)
     if (task == nil)
     {
         task = [PiDownloadTask taskWithURL:urlString];
-        task.resumeDataStorage = self;
+        task.storage = self;
         [_tasks addObject:task];
     }
     return task;
@@ -229,7 +222,7 @@ static NSString * MD5String(NSString *string)
     return [_storagePath stringByAppendingPathComponent:name];
 }
 
-- (void) onPidDownloadTask:(PiDownloadTask *)task saveResumeData:(NSData *)resumeData
+- (void) onPiDownloadTask:(PiDownloadTask *)task saveResumeData:(NSData *)resumeData
 {
     NSString *path = [self resumeDataPathWithTask:task];
     NSString *tmp = [self.class localPathWithResumeFile:path];
@@ -266,5 +259,11 @@ static NSString * MD5String(NSString *string)
         return resumeData;
     }
     return nil;
+}
+
+
+- (void) onPiDownloadRemove:(PiDownloadTask *)task
+{
+    [self removeTask:task];
 }
 @end

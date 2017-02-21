@@ -34,16 +34,16 @@
 @end
 
 // MARK: - for Storage
-@protocol PiDownloadTaskResumeData <NSObject>
-- (void) onPidDownloadTask:(PiDownloadTask *)task saveResumeData:(NSData *)resumeData;
+@protocol PiDownloadTaskStorage <NSObject>
+- (void) onPiDownloadTask:(PiDownloadTask *)task saveResumeData:(NSData *)resumeData;
 - (NSData *) onPiDownloadTaskReadResumeData:(PiDownloadTask *)task;
+
+- (void) onPiDownloadRemove:(PiDownloadTask *)task;
 @end
 
 @interface PiDownloadTask (Storage) <NSCoding>
-@property (weak) id<PiDownloadTaskResumeData> resumeDataStorage;
+@property (weak) id<PiDownloadTaskStorage> storage;
 + (PiDownloadTask *) taskWithURL:(NSString *)url;
-
-- (void) stopAndSaveResumeData;
 @end
 
 #endif /* PiDownloadTaskImp_h */

@@ -21,7 +21,6 @@
     int64_t _receivedSize;
     
     int64_t _lastSaveResumeSize;
-    BOOL    _savingResumenData;
 }
 @property (nonatomic, strong) NSMutableArray *localPaths;
 @property (nonatomic, assign) int64_t autoSaveResumeSize;
@@ -30,7 +29,7 @@
 
 @property (nonatomic, weak) PiDownloadTaskController *controller;
 @property (nonatomic, weak) id<PiDownloadTaskCreator> taskCreator;
-@property (nonatomic, weak) id<PiDownloadTaskResumeData> resumeDataStorage;
+@property (nonatomic, weak) id<PiDownloadTaskStorage> storage;
 @end
 
 @implementation PiDownloadTask
@@ -180,17 +179,17 @@
 
 - (void) setResumeData:(NSData *)resumeData
 {
-    if ([_resumeDataStorage respondsToSelector:@selector(onPidDownloadTask:saveResumeData:)])
+    if ([_storage respondsToSelector:@selector(onPiDownloadTask:saveResumeData:)])
     {
-        [_resumeDataStorage onPidDownloadTask:self saveResumeData:resumeData];
+        [_storage onPiDownloadTask:self saveResumeData:resumeData];
     }
 }
 
 - (NSData *) resumeData
 {
-    if ([_resumeDataStorage respondsToSelector:@selector(onPiDownloadTaskReadResumeData:)])
+    if ([_storage respondsToSelector:@selector(onPiDownloadTaskReadResumeData:)])
     {
-        return [_resumeDataStorage onPiDownloadTaskReadResumeData:self];
+        return [_storage onPiDownloadTaskReadResumeData:self];
     }
     return nil;
 }
@@ -281,53 +280,52 @@
 
 - (void) resume
 {
-    if (!_savingResumenData && !_controller.canStartTask)
+    if (self.state == PiDownloadTaskState_Running) return;
+    
+    if (!_controller.canStartTask)
     {
         self.state = PiDownloadTaskState_Waiting;
         return;
     }
     
-    [self ready];
     self.state = PiDownloadTaskState_Running;
+    [self startTask];
+}
+
+- (void) startTask
+{
+    [self ready];
     [_task resume];
 }
 
-- (void) stopAndSaveResumeData
+- (void) suspend
 {
+    self.state = PiDownloadTaskState_Suspend;
     [_task cancelByProducingResumeData:^(NSData *resumeData) {
         if ([PiDownloadStorage isValidresumeData:resumeData])
         {
             self.resumeData = resumeData;
         }
     }];
-}
-
-- (void) suspend
-{
-    self.state = PiDownloadTaskState_Suspend;
-    [self stopAndSaveResumeData];
+    self.task = nil;
 }
 
 - (void) cancel
 {
     self.state = PiDownloadTaskState_Canceling;
     [_task cancel];
+    self.task = nil;
+    if ([_storage respondsToSelector:@selector(onPiDownloadRemove:)])
+    {
+        [_storage onPiDownloadRemove:self];
+    }
 }
 
 // MARK: - Downloader
 - (void) onDownloader:(PiDownloader *)downloader didCompleteWithError:(NSError *)error
 {
     self.task = nil;
-    if (self.state != PiDownloadTaskState_Running)
-    {
-        return;
-    }
-    if (_savingResumenData)
-    {
-        [self resume];
-        _savingResumenData = NO;
-        return;
-    }
+    if (self.state == PiDownloadTaskState_Canceling) return;
     
     self.state = PiDownloadTaskState_Error;
     if ([_delegate respondsToSelector:@selector(onPiDownloadTask:downloadError:)])
@@ -354,16 +352,17 @@
         [_delegate onPiDownloadTask:self didUpdateProgress:self.progress];
     }
     
-    if (!_savingResumenData && _autoSaveResumeSize > 0 && totalWritten - _lastSaveResumeSize > _autoSaveResumeSize)
+    if (_autoSaveResumeSize > 0 && totalWritten - _lastSaveResumeSize > _autoSaveResumeSize)
     {
-        _savingResumenData = YES;
         [_task cancelByProducingResumeData:^(NSData *resumeData) {
             if ([PiDownloadStorage isValidresumeData:resumeData])
             {
                 self.resumeData = resumeData;
                 _lastSaveResumeSize = totalWritten;
             }
+            [self startTask];
         }];
+        self.task = nil;
     }
 }
 
