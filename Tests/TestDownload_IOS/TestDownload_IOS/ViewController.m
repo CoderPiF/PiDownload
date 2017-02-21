@@ -37,9 +37,16 @@
     [_taskTableView reloadData];
 }
 
+- (NSString *) localPathForUrl:(NSString *)url
+{
+    NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+    return [path stringByAppendingPathComponent:[url lastPathComponent]];
+}
+
 - (IBAction)addTaskDidPressed:(UIButton *)sender
 {
-    PiDownloadTask *task = [[PiDownloader SharedObject] addTaskWithUrl:_textField.text];
+    NSString *path = [self localPathForUrl:_textField.text];
+    PiDownloadTask *task = [[PiDownloader SharedObject] addTaskWithUrl:_textField.text toLocalPath:path];
     task.userData = _textField.text;
     [_taskTableView reloadData];
 }

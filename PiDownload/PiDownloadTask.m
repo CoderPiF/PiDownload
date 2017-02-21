@@ -145,6 +145,11 @@
     }
 }
 
+- (void) setLocalPath:(NSString *)localPath
+{
+    _localPath = localPath;
+}
+
 // MARK: - ResumeData
 - (BOOL) isValidresumeData
 {
