@@ -7,4 +7,5 @@
 //
 
 #import <PiDownload/PiDownloadLogger.h>
+#import <PiDownload/PiDownloadConfig.h>
 #import <PiDownload/PiDownloader.h>

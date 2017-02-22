@@ -12,73 +12,11 @@
 #import "PiDownloadStorage.h"
 #import "PiDownloadTaskController.h"
 
-#if TARGET_OS_IPHONE
-#import "Reachability.h"
-#endif
-
-@implementation PiDownloadConfig
-- (instancetype) init
-{
-    self = [super init];
-    if (self)
-    {
-        _autoStartOnLaunch = YES;
-        _autoStopOnWWAN = YES;
-        _autoSaveResumeSize = 0;
-        _maxDownloadCount = 1;
-        _autoStartNextTask = YES;
-    }
-    return self;
-}
-
-#define kClassVersion           @"ClassVersion"
-#define kAutoSaveResumeSizeKey  @"AutoSaveResumeSizeKey"
-#define kAutoStopOnWWAN         @"AutoStopOnWWAN"
-#define kAutoStartOnLaunch      @"AutoStartOnLaunch"
-#define kMaxDownloadCount       @"MaxDownloadCount"
-#define kAutoStartNextTask      @"AutoStartNextTask"
-+ (NSInteger) version
-{
-    return 1;
-}
-
-- (instancetype) initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super init];
-    if (self)
-    {
-        self.autoSaveResumeSize = [aDecoder decodeInt64ForKey:kAutoSaveResumeSizeKey];
-        self.autoStopOnWWAN = [aDecoder decodeBoolForKey:kAutoStopOnWWAN];
-        self.autoStartOnLaunch = [aDecoder decodeBoolForKey:kAutoStartOnLaunch];
-        self.maxDownloadCount = [aDecoder decodeIntegerForKey:kMaxDownloadCount];
-        self.autoStartNextTask = [aDecoder decodeBoolForKey:kAutoStartNextTask];
-    }
-    return self;
-}
-
-- (void) encodeWithCoder:(NSCoder *)aCoder
-{
-    [aCoder encodeInteger:self.class.version forKey:kClassVersion];
-    [aCoder encodeBool:self.autoStartOnLaunch forKey:kAutoStartOnLaunch];
-    [aCoder encodeBool:self.autoStopOnWWAN forKey:kAutoStopOnWWAN];
-    [aCoder encodeInt64:self.autoSaveResumeSize forKey:kAutoSaveResumeSizeKey];
-    [aCoder encodeInteger:self.maxDownloadCount forKey:kMaxDownloadCount];
-    [aCoder encodeBool:self.autoStartNextTask forKey:kAutoStartNextTask];
-}
-
-@end
-
 @interface PiDownloader ()<NSURLSessionDownloadDelegate, PiDownloadTaskCreator>
-#if TARGET_OS_IPHONE
-@property (nonatomic, strong) NSMutableArray *waitNetworkTaskList;
-@property (nonatomic, assign) NetworkStatus networkStatus;
-#endif
-@property (nonatomic, strong) PiDownloadTaskController *taskController;
+@property (nonatomic, strong) PiDownloadTaskController *controller;
 @property (nonatomic, strong) PiDownloadStorage *storage;
 @property (nonatomic, strong) NSURLSession *backgroundSession;
-@end
 
-@interface PiDownloader (Manager_Imp)
 + (void) AddDownloader:(PiDownloader *)downloader;
 @end
 
@@ -117,11 +55,6 @@
     return [[self alloc] initWithIdentifier:identifier config:config];
 }
 
-- (void) dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (instancetype) initWithIdentifier:(NSString *)identifier
 {
     NSString *tmpId = [self.class SessionIdentifier:identifier];
@@ -136,16 +69,13 @@
     {
         _identifier = identifier;
         _sessionIdentifier = [self.class SessionIdentifier:identifier];
-        _taskController = [PiDownloadTaskController new];
+        _controller = [PiDownloadTaskController new];
         self.config = config;
         PI_INFO_LOG(@"Init Downloader With Identifier : %@", identifier);
         [self initBgSession];
         _storage = [PiDownloadStorage storageWithIdentifier:_sessionIdentifier];
-        _taskController.storage = _storage;
+        _controller.storage = _storage;
         [self readyTaskList];
-#if TARGET_OS_IPHONE
-        [self watchNetwork];
-#endif
     }
     
     [self.class AddDownloader:self];
@@ -164,15 +94,10 @@
     _config = config;
     [PiDownloadStorage saveConfig:_config forIdentifier:_sessionIdentifier];
     
-    _taskController.autoStartNextTask = _config.autoStartNextTask;
-    _taskController.maxDownloadCount = _config.maxDownloadCount;
-#if TARGET_OS_IPHONE
-    if (_networkStatus == ReachableViaWWAN && !_config.autoStopOnWWAN)
-    {
-        [self resumeAllTaskForNetwork];
-    }
-#endif
-    
+    _controller.autoStartNextTask = _config.autoStartNextTask;
+    _controller.maxDownloadCount = _config.maxDownloadCount;
+    _controller.autoStopOnWWAN = _config.autoStopOnWWAN;
+
     for (PiDownloadTask *task in _storage.tasks)
     {
         task.autoSaveResumeSize = config.autoSaveResumeSize;
@@ -182,7 +107,7 @@
 // MARK: - Task
 - (void) configTask:(PiDownloadTask *)task
 {
-    task.controller = _taskController;
+    task.controller = _controller;
     task.taskCreator = self;
     task.autoSaveResumeSize = _config.autoSaveResumeSize;
 }
@@ -231,7 +156,7 @@
         [self configTask:task];
         [task ready];
         
-        if (task.state == PiDownloadTaskState_Running || task.state == PiDownloadTaskState_Waiting)
+        if (task.state == PiDownloadTaskState_Waiting)
         {
             if (_config.autoStartOnLaunch)
             {
@@ -331,71 +256,7 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
     }
 }
 
-// MARK: - Reachability
-#if TARGET_OS_IPHONE
-- (void) stopAllTaskForNoNetwork
-{
-    _taskController.disableAutoStart = YES;
-    _waitNetworkTaskList = [NSMutableArray array];
-    NSArray *array = _storage.tasks.copy;
-    for (PiDownloadTask *task in array)
-    {
-        if (task.state == PiDownloadTaskState_Running ||
-            task.state == PiDownloadTaskState_Waiting)
-        {
-            [_waitNetworkTaskList addObject:task];
-            [task suspend];
-        }
-    }
-}
-
-- (void) resumeAllTaskForNetwork
-{
-    _taskController.disableAutoStart = NO;
-    for (PiDownloadTask *task in _waitNetworkTaskList)
-    {
-        if (task.state == PiDownloadTaskState_Suspend) // 等待网络恢复过程中状态可能发送变化，例如取消下载，例如蜂窝手动下载
-        {
-            [task resume];
-        }
-    }
-    _waitNetworkTaskList = nil;
-}
-
-- (void) reachabilityChange:(NSNotification *)notification
-{
-    Reachability *reach = [notification object];
-    if ([reach isKindOfClass:[Reachability class]])
-    {
-        _networkStatus = [reach currentReachabilityStatus];
-        switch (_networkStatus) {
-            case NotReachable: [self stopAllTaskForNoNetwork]; break;
-            case ReachableViaWiFi: [self resumeAllTaskForNetwork]; break;
-            case ReachableViaWWAN:
-            {
-                if (_config.autoStopOnWWAN)
-                {
-                    [self stopAllTaskForNoNetwork];
-                }
-                break;
-            }
-        }
-    }
-}
-
-- (void) watchNetwork
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(reachabilityChange:)
-                                                 name:kReachabilityChangedNotification
-                                               object:nil];
-}
-#endif
-@end
-
-
 // MARK: - Manager
-@implementation PiDownloader (Manager)
 + (NSMutableArray<PiDownloader *> *) Downloaders
 {
     static NSMutableArray *s_list = nil;

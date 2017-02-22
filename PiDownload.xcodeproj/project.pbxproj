@@ -23,19 +23,25 @@
 		02460E071E554ED600934851 /* PiDownloadTask.h in Headers */ = {isa = PBXBuildFile; fileRef = 02460E041E554ED500934851 /* PiDownloadTask.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		02460E081E554ED600934851 /* PiDownloadTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 02460E051E554ED500934851 /* PiDownloadTask.m */; };
 		02460E091E554ED600934851 /* PiDownloadTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 02460E051E554ED500934851 /* PiDownloadTask.m */; };
-		02460E0E1E557CF000934851 /* PiDownloadStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = 02460E0C1E557CF000934851 /* PiDownloadStorage.h */; };
-		02460E0F1E557CF000934851 /* PiDownloadStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = 02460E0C1E557CF000934851 /* PiDownloadStorage.h */; };
+		02460E0E1E557CF000934851 /* PiDownloadStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = 02460E0C1E557CF000934851 /* PiDownloadStorage.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		02460E0F1E557CF000934851 /* PiDownloadStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = 02460E0C1E557CF000934851 /* PiDownloadStorage.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		02460E101E557CF000934851 /* PiDownloadStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 02460E0D1E557CF000934851 /* PiDownloadStorage.m */; };
 		02460E111E557CF000934851 /* PiDownloadStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 02460E0D1E557CF000934851 /* PiDownloadStorage.m */; };
-		02460E461E56972800934851 /* PiDownloadTaskImp.h in Headers */ = {isa = PBXBuildFile; fileRef = 02460E451E56972800934851 /* PiDownloadTaskImp.h */; };
+		02460E461E56972800934851 /* PiDownloadTaskImp.h in Headers */ = {isa = PBXBuildFile; fileRef = 02460E451E56972800934851 /* PiDownloadTaskImp.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		02460E471E56972800934851 /* PiDownloadTaskImp.h in Headers */ = {isa = PBXBuildFile; fileRef = 02460E451E56972800934851 /* PiDownloadTaskImp.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		02460E4A1E56E73900934851 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02460E491E56E73900934851 /* AppKit.framework */; };
 		02460E4E1E56EA0300934851 /* Reachability.h in Headers */ = {isa = PBXBuildFile; fileRef = 02460E4B1E56EA0300934851 /* Reachability.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		02460E501E56EA0300934851 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 02460E4C1E56EA0300934851 /* Reachability.m */; };
-		02460E5C1E5ACB5C00934851 /* PiDownloadTaskController.h in Headers */ = {isa = PBXBuildFile; fileRef = 02460E5A1E5ACB5C00934851 /* PiDownloadTaskController.h */; };
-		02460E5D1E5ACB5C00934851 /* PiDownloadTaskController.h in Headers */ = {isa = PBXBuildFile; fileRef = 02460E5A1E5ACB5C00934851 /* PiDownloadTaskController.h */; };
+		02460E5C1E5ACB5C00934851 /* PiDownloadTaskController.h in Headers */ = {isa = PBXBuildFile; fileRef = 02460E5A1E5ACB5C00934851 /* PiDownloadTaskController.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		02460E5D1E5ACB5C00934851 /* PiDownloadTaskController.h in Headers */ = {isa = PBXBuildFile; fileRef = 02460E5A1E5ACB5C00934851 /* PiDownloadTaskController.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		02460E5E1E5ACB5C00934851 /* PiDownloadTaskController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02460E5B1E5ACB5C00934851 /* PiDownloadTaskController.m */; };
 		02460E5F1E5ACB5C00934851 /* PiDownloadTaskController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02460E5B1E5ACB5C00934851 /* PiDownloadTaskController.m */; };
+		024ED6351E5D70EB001D4AF4 /* PiDownloadConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 024ED6331E5D70EB001D4AF4 /* PiDownloadConfig.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		024ED6361E5D70EB001D4AF4 /* PiDownloadConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 024ED6331E5D70EB001D4AF4 /* PiDownloadConfig.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		024ED6371E5D70EB001D4AF4 /* PiDownloadConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 024ED6341E5D70EB001D4AF4 /* PiDownloadConfig.m */; };
+		024ED6381E5D70EB001D4AF4 /* PiDownloadConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 024ED6341E5D70EB001D4AF4 /* PiDownloadConfig.m */; };
+		024ED6391E5D7243001D4AF4 /* Reachability.h in Headers */ = {isa = PBXBuildFile; fileRef = 02460E4B1E56EA0300934851 /* Reachability.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		024ED63A1E5D729D001D4AF4 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 02460E4C1E56EA0300934851 /* Reachability.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +64,8 @@
 		02460E4C1E56EA0300934851 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		02460E5A1E5ACB5C00934851 /* PiDownloadTaskController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PiDownloadTaskController.h; sourceTree = "<group>"; };
 		02460E5B1E5ACB5C00934851 /* PiDownloadTaskController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PiDownloadTaskController.m; sourceTree = "<group>"; };
+		024ED6331E5D70EB001D4AF4 /* PiDownloadConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PiDownloadConfig.h; sourceTree = "<group>"; };
+		024ED6341E5D70EB001D4AF4 /* PiDownloadConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PiDownloadConfig.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +115,8 @@
 				02460DF91E554DEC00934851 /* PiDownloadLogger.m */,
 				02460DFE1E554E8200934851 /* PiDownloader.h */,
 				02460DFF1E554E8200934851 /* PiDownloader.m */,
+				024ED6331E5D70EB001D4AF4 /* PiDownloadConfig.h */,
+				024ED6341E5D70EB001D4AF4 /* PiDownloadConfig.m */,
 				02460E041E554ED500934851 /* PiDownloadTask.h */,
 				02460E051E554ED500934851 /* PiDownloadTask.m */,
 				02460E5A1E5ACB5C00934851 /* PiDownloadTaskController.h */,
@@ -136,12 +146,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				02460DE01E554D3800934851 /* PiDownload.h in Headers */,
+				024ED6351E5D70EB001D4AF4 /* PiDownloadConfig.h in Headers */,
+				024ED6391E5D7243001D4AF4 /* Reachability.h in Headers */,
 				02460E5C1E5ACB5C00934851 /* PiDownloadTaskController.h in Headers */,
 				02460E461E56972800934851 /* PiDownloadTaskImp.h in Headers */,
+				02460E0E1E557CF000934851 /* PiDownloadStorage.h in Headers */,
 				02460DFA1E554DEC00934851 /* PiDownloadLogger.h in Headers */,
 				02460E001E554E8200934851 /* PiDownloader.h in Headers */,
 				02460E061E554ED500934851 /* PiDownloadTask.h in Headers */,
-				02460E0E1E557CF000934851 /* PiDownloadStorage.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -149,14 +161,15 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				02460E5D1E5ACB5C00934851 /* PiDownloadTaskController.h in Headers */,
 				02460DF71E554D9400934851 /* PiDownload.h in Headers */,
+				024ED6361E5D70EB001D4AF4 /* PiDownloadConfig.h in Headers */,
 				02460DFB1E554DEC00934851 /* PiDownloadLogger.h in Headers */,
 				02460E071E554ED600934851 /* PiDownloadTask.h in Headers */,
 				02460E4E1E56EA0300934851 /* Reachability.h in Headers */,
 				02460E471E56972800934851 /* PiDownloadTaskImp.h in Headers */,
-				02460E011E554E8200934851 /* PiDownloader.h in Headers */,
+				02460E5D1E5ACB5C00934851 /* PiDownloadTaskController.h in Headers */,
 				02460E0F1E557CF000934851 /* PiDownloadStorage.h in Headers */,
+				02460E011E554E8200934851 /* PiDownloader.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -264,6 +277,8 @@
 			files = (
 				02460E101E557CF000934851 /* PiDownloadStorage.m in Sources */,
 				02460E081E554ED600934851 /* PiDownloadTask.m in Sources */,
+				024ED6371E5D70EB001D4AF4 /* PiDownloadConfig.m in Sources */,
+				024ED63A1E5D729D001D4AF4 /* Reachability.m in Sources */,
 				02460DFC1E554DEC00934851 /* PiDownloadLogger.m in Sources */,
 				02460E5E1E5ACB5C00934851 /* PiDownloadTaskController.m in Sources */,
 				02460E021E554E8200934851 /* PiDownloader.m in Sources */,
@@ -280,6 +295,7 @@
 				02460E5F1E5ACB5C00934851 /* PiDownloadTaskController.m in Sources */,
 				02460E031E554E8200934851 /* PiDownloader.m in Sources */,
 				02460E501E56EA0300934851 /* Reachability.m in Sources */,
+				024ED6381E5D70EB001D4AF4 /* PiDownloadConfig.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

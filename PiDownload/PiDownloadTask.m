@@ -219,7 +219,7 @@
     return _runningTime;
 }
 
-// MARK: - Transmission
+// MARK: -
 - (NSUInteger) identifier
 {
     return _task.taskIdentifier;
