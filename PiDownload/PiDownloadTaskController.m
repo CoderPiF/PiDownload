@@ -15,6 +15,7 @@
 @property (nonatomic, assign) BOOL disableAutoStart; // 蜂窝状态下并且打开蜂窝不下载的配置时：disable
 @property (nonatomic, strong) NSMutableArray *waitNetworkTaskList;
 @property (nonatomic, assign) NetworkStatus networkStatus;
+@property (nonatomic, strong) Reachability *reachability;
 @end
 
 @implementation PiDownloadTaskController
@@ -171,6 +172,8 @@
 
 - (void) watchNetwork
 {
+    _reachability = [Reachability reachabilityWithHostName:@"www.baidu.com"];
+    [_reachability startNotifier];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reachabilityChange:)
                                                  name:kReachabilityChangedNotification
